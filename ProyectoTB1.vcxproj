@@ -116,7 +116,10 @@
   <ItemGroup>
     <ClInclude Include="GestionUsuario.h" />
     <ClInclude Include="Lista.h" />
+    <ClInclude Include="Notificacion.h" />
+    <ClInclude Include="Perfil.h" />
     <ClInclude Include="Recompensa.h" />
+    <ClInclude Include="Suscripcion.h" />
     <ClInclude Include="Usuario.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

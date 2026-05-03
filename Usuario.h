@@ -6,6 +6,10 @@
 #include <vector>
 #include "Lista.h"
 #include "Recompensa.h"
+#include "Suscripcion.h"
+#include "Perfil.h"
+#include "Notificacion.h"
+
 using namespace std;
 
 // entidad que representa a un estudiante registrado en la plataforma
@@ -24,21 +28,31 @@ private:
     int puntosTotales;
 
     Lista<Recompensa<int>*> recompensas;
+    Perfil* perfil;
+    Suscripcion<int>* suscripcion;
+    Lista<Notificacion*> notificaciones;
 
 public:
     // constructores
     Usuario()
         : id(T()), nombre(""), apellido(""), idiomaNativo(""),
-        correo(""), nivel(1), puntosTotales(0) {}
+        correo(""), nivel(1), puntosTotales(0) {
+        perfil = new Perfil();
+        suscripcion = new Suscripcion<int>(1, "Gratis", 1.0);
+    }
 
     Usuario(T id, string nombre, string apellido, string idiomaNativo, string correo)
-        : id(id), nombre(nombre), apellido(apellido),
-        idiomaNativo(idiomaNativo), correo(correo),
-        nivel(1), puntosTotales(0) {}
+        : id(id), nombre(nombre), apellido(apellido), idiomaNativo(idiomaNativo), correo(correo),
+        nivel(1), puntosTotales(0) {
+        perfil = new Perfil();
+        suscripcion = new Suscripcion<int>(1, "Gratis", 1.0);
+    }
 
     ~Usuario() {
-        for (uint i = 0; i < recompensas.longitud(); i++)
-            delete recompensas.obtenerPos(i);
+        delete perfil;
+        delete suscripcion;
+        for (uint i = 0; i < recompensas.longitud(); i++) delete recompensas.obtenerPos(i);
+        for (uint i = 0; i < notificaciones.longitud(); i++) delete notificaciones.obtenerPos(i);
     }
 
     // getters
@@ -58,6 +72,13 @@ public:
     void setNivel(int n) { nivel = n; }
     void setPuntosTotales(int p) { puntosTotales = p; }
 
+    Perfil* getPerfil() { return perfil; }
+    Suscripcion<int>* getSuscripcion() { return suscripcion; }
+
+    void enviarNotificacion(string m, string f) {
+        notificaciones.agregaFinal(new Notificacion(m, f));
+    }
+
     // agrega una recompensa al catalogo del usuario — O(1)
     void agregarRecompensa(Recompensa<int>* r) {
         recompensas.agregaFinal(r);
@@ -67,22 +88,23 @@ public:
     // lambda 1: calcula el nivel segun los puntos acumulados
     void agregarPuntos(int puntos) {
         if (puntos <= 0) return;
-        puntosTotales += puntos;
+
+        // Aplicar multiplicador de suscripción
+        int puntosFinales = puntos * suscripcion->getMultiplicador();
+        puntosTotales += puntosFinales;
 
         auto calcularNivel = [](int pts) -> int {
-            if (pts < 100)  return 1;
-            if (pts < 300)  return 2;
-            if (pts < 600)  return 3;
-            if (pts < 1000) return 4;
-            return 5;
+            if (pts < 100) return 1;
+            if (pts < 300) return 2;
+            if (pts < 600) return 3;
+            return 4;
             };
 
         int nuevoNivel = calcularNivel(puntosTotales);
         if (nuevoNivel > nivel) {
             nivel = nuevoNivel;
-            cout << "  >> " << nombre << " Subio al nivel " << nivel << "!" << endl;
+            enviarNotificacion("Felicidades! Subiste al nivel " + to_string(nivel), "Hoy");
         }
-
         verificarRecompensas();
     }
 
@@ -158,21 +180,24 @@ public:
             << " | " << puntosTotales << " pts" << endl;
     }
 
-    // muestra los datos completos del usuario y su lista de recompensas
+    // muestra los datos completos del usuario unificando perfil y recompensas
     void mostrar() {
-        cout << "  ------------------------------" << endl;
-        cout << "  ID      : " << id << endl;
-        cout << "  Nombre  : " << nombre << " " << apellido << endl;
-        cout << "  Correo  : " << correo << endl;
-        cout << "  Idioma  : " << idiomaNativo << endl;
-        cout << "  Nivel   : " << nivel << endl;
-        cout << "  Puntos  : " << puntosTotales << endl;
+        cout << "  === PERFIL DE " << nombre << " " << apellido << " (" << suscripcion->getTipo() << ") ===" << endl;
+        cout << "  ID      : " << id << " | Correo: " << correo << " | Idioma: " << idiomaNativo << endl;
+        cout << "  Vidas   : " << perfil->getVidas() << " | Racha: " << perfil->getRacha() << " dias" << endl;
+        cout << "  Puntos  : " << puntosTotales << " | Nivel: " << nivel << endl;
+
+        if (!notificaciones.esVacia()) {
+            cout << "  Notificaciones recientes:" << endl;
+            for (uint i = 0; i < notificaciones.longitud(); i++) notificaciones.obtenerPos(i)->mostrar();
+        }
+
         cout << "  Recompensas (" << recompensas.longitud() << "):" << endl;
         for (uint i = 0; i < recompensas.longitud(); i++) {
             Recompensa<int>* r = recompensas.obtenerPos(i);
             if (r) r->mostrar();
         }
-        cout << "  ------------------------------" << endl;
+        cout << "  ======================================" << endl;
     }
 
     // guarda el usuario en un archivo de texto
@@ -182,12 +207,12 @@ public:
         if (archivo.is_open()) {
             archivo << id << "|" << nombre << "|" << apellido << "|"
                 << idiomaNativo << "|" << correo << "|"
-                << nivel << "|" << puntosTotales << "\n";
+                << nivel << "|" << puntosTotales << "|"
+                << suscripcion->getTipo() << "|" << perfil->getRacha() << "|" << perfil->getVidas() << "\n";
             archivo.close();
         }
     }
 
-    // ayuda de ia
     // carga un usuario desde una linea del archivo de texto
     static Usuario<int>* cargarDesdeLinea(const string& linea) {
         vector<string> partes;
@@ -205,6 +230,17 @@ public:
         );
         u->setNivel(stoi(partes[5]));
         u->setPuntosTotales(stoi(partes[6]));
+
+        // Cargar nuevos atributos si el archivo ya fue actualizado
+        if (partes.size() >= 10) {
+            if (partes[7] == "Premium") {
+                u->getSuscripcion()->setTipo("Premium");
+                u->getSuscripcion()->setMultiplicador(2.0);
+            }
+            u->getPerfil()->setRacha(stoi(partes[8]));
+            u->getPerfil()->setVidas(stoi(partes[9]));
+        }
+
         return u;
     }
 

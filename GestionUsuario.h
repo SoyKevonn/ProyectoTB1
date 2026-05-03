@@ -9,12 +9,10 @@
 #include "Recompensa.h"
 using namespace std;
 
-// lista global de usuarios y contador de ids
 Lista<Usuario<int>*> listaUsuarios;
 int contadorIdUsuario = 1;
 int contadorIdRecompensa = 1;
 
-// precionar enter para continuar. ayuda de ia
 void pausar() {
     cout << "\n  presione enter para continuar...";
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -31,7 +29,6 @@ void mostrarEncabezado() {
     cout << "============================================" << endl;
 }
 
-// recompensas por defecto que se asignan a cada usuario nuevo
 void asignarRecompensasBase(Usuario<int>* u) {
     u->agregarRecompensa(new Recompensa<int>(contadorIdRecompensa++, "Principiante", "Completa tu primer ejercicio", 50));
     u->agregarRecompensa(new Recompensa<int>(contadorIdRecompensa++, "Constante", "Acumula 200 puntos", 200));
@@ -40,7 +37,6 @@ void asignarRecompensasBase(Usuario<int>* u) {
     u->ordenarRecompensasPorPuntos();
 }
 
-// cargar usuarios desde archivo al iniciar
 void cargarUsuarios() {
     ifstream archivo("usuarios.txt");
     if (!archivo.is_open()) return;
@@ -59,7 +55,6 @@ void cargarUsuarios() {
     archivo.close();
 }
 
-// buscar por id
 Usuario<int>* buscarUsuarioPorId(int id) {
     for (uint i = 0; i < listaUsuarios.longitud(); i++) {
         Usuario<int>* u = listaUsuarios.obtenerPos(i);
@@ -68,7 +63,6 @@ Usuario<int>* buscarUsuarioPorId(int id) {
     return nullptr;
 }
 
-// reescribir el archivo con info actual
 void reescribirArchivoUsuarios() {
     ofstream archivo("usuarios.txt", ios::trunc);
     archivo.close();
@@ -78,20 +72,29 @@ void reescribirArchivoUsuarios() {
     }
 }
 
-// registrar nuevo usuario
 void registrarUsuario() {
     limpiarPantalla();
     cout << "  -- Registrar usuario --" << endl << endl;
 
     string nombre, apellido, idioma, correo;
+    int tipoSub;
     cout << "  Nombre      : "; getline(cin, nombre);
     cout << "  Apellido    : "; getline(cin, apellido);
     cout << "  Idioma nat. : "; getline(cin, idioma);
     cout << "  Correo      : "; getline(cin, correo);
+    cout << "  Suscripcion (1: Gratis, 2: Premium): "; cin >> tipoSub;
+    cin.ignore();
 
     Usuario<int>* nuevo = new Usuario<int>(
         contadorIdUsuario++, nombre, apellido, idioma, correo
     );
+
+    if (tipoSub == 2) {
+        nuevo->getSuscripcion()->setTipo("Premium");
+        nuevo->getSuscripcion()->setMultiplicador(2.0);
+        nuevo->enviarNotificacion("Bienvenido a Linguatrack Premium!", "Sistema");
+    }
+
     asignarRecompensasBase(nuevo);
     listaUsuarios.agregaFinal(nuevo);
     nuevo->guardarEnArchivo("usuarios.txt");
@@ -101,7 +104,6 @@ void registrarUsuario() {
     pausar();
 }
 
-// listar los usuarios
 void listarUsuarios() {
     limpiarPantalla();
     cout << "  -- Lista de usuarios --" << endl << endl;
@@ -118,7 +120,6 @@ void listarUsuarios() {
     pausar();
 }
 
-// agregar puntos
 void agregarPuntosUsuario() {
     limpiarPantalla();
     cout << "  -- Agregar puntos --" << endl << endl;
@@ -130,18 +131,17 @@ void agregarPuntosUsuario() {
 
     Usuario<int>* u = buscarUsuarioPorId(id);
     if (u == nullptr) {
-        cout << endl << "  Ssuario no encontrado." << endl;
+        cout << endl << "  Usuario no encontrado." << endl;
     }
     else {
         u->agregarPuntos(puntos);
         reescribirArchivoUsuarios();
-        cout << endl << "  Puntos actualizados." << endl;
+        cout << endl << "  Puntos actualizados (Se aplico multiplicador si es Premium)." << endl;
         u->mostrar();
     }
     pausar();
 }
 
-// buscar recompensa con usuario
 void buscarRecompensaUsuario() {
     limpiarPantalla();
     cout << "  -- Buscar recompensa --" << endl << endl;
@@ -167,7 +167,6 @@ void buscarRecompensaUsuario() {
     pausar();
 }
 
-// tabla x nivel
 void mostrarTablaDeNiveles() {
     limpiarPantalla();
     cout << "  -- Puntos necesarios por nivel --" << endl << endl;
@@ -179,7 +178,6 @@ void mostrarTablaDeNiveles() {
     pausar();
 }
 
-// elimnar usuario id
 void eliminarUsuario() {
     limpiarPantalla();
     cout << "  -- Eliminar usuario --" << endl << endl;
@@ -202,7 +200,6 @@ void eliminarUsuario() {
     pausar();
 }
 
-// modificar datos de un usuario existente
 void modificarUsuario() {
     limpiarPantalla();
     cout << "  -- Modificar usuario --" << endl << endl;
@@ -212,7 +209,7 @@ void modificarUsuario() {
 
     Usuario<int>* u = buscarUsuarioPorId(id);
     if (u == nullptr) {
-        cout << endl << "  Ssuario no encontrado." << endl;
+        cout << endl << "  Usuario no encontrado." << endl;
         pausar();
         return;
     }
@@ -225,10 +222,13 @@ void modificarUsuario() {
     cout << "  2. Apellido" << endl;
     cout << "  3. Idioma nativo" << endl;
     cout << "  4. Correo" << endl;
+    cout << "  5. Cambiar Suscripcion (Premium/Gratis)" << endl;
+    cout << "  6. Aumentar Racha de estudio (+1)" << endl;
+    cout << "  7. Restar vida por error (-1)" << endl;
     cout << "  0. Cancelar" << endl;
     cout << endl << "  Opcion: ";
 
-    int op; cin >> op;
+    int op; cin >> op; cin.ignore();
     string nuevoValor;
 
     switch (op) {
@@ -248,6 +248,28 @@ void modificarUsuario() {
         cout << "  Nuevo correo   : "; getline(cin, nuevoValor);
         u->setCorreo(nuevoValor);
         break;
+    case 5:
+        if (u->getSuscripcion()->getTipo() == "Gratis") {
+            u->getSuscripcion()->setTipo("Premium");
+            u->getSuscripcion()->setMultiplicador(2.0);
+            u->enviarNotificacion("Suscripcion mejorada a Premium", "Sistema");
+            cout << "  Suscripcion mejorada a Premium." << endl;
+        }
+        else {
+            u->getSuscripcion()->setTipo("Gratis");
+            u->getSuscripcion()->setMultiplicador(1.0);
+            u->enviarNotificacion("Suscripcion cambiada a Gratis", "Sistema");
+            cout << "  Suscripcion cambiada a Gratis." << endl;
+        }
+        break;
+    case 6:
+        u->getPerfil()->aumentarRacha();
+        cout << "  Racha aumentada a " << u->getPerfil()->getRacha() << " dias." << endl;
+        break;
+    case 7:
+        u->getPerfil()->perderVida();
+        cout << "  Vidas restantes: " << u->getPerfil()->getVidas() << endl;
+        break;
     case 0:
         return;
     default:
@@ -262,7 +284,6 @@ void modificarUsuario() {
     pausar();
 }
 
-// ranking de usuarios ordenados por puntos usando insertion sort — O(n^2)
 void rankingUsuarios() {
     limpiarPantalla();
     cout << "  -- Ranking de usuarios --" << endl << endl;
@@ -273,12 +294,10 @@ void rankingUsuarios() {
         return;
     }
 
-    // copiar punteros a vector para ordenar sin modificar la lista original
     vector<Usuario<int>*> vec;
     for (uint i = 0; i < listaUsuarios.longitud(); i++)
         vec.push_back(listaUsuarios.obtenerPos(i));
 
-    // insertion sort descendente por puntos totales
     int n = (int)vec.size();
     for (int i = 1; i < n; i++) {
         Usuario<int>* key = vec[i];
@@ -290,7 +309,6 @@ void rankingUsuarios() {
         vec[j + 1] = key;
     }
 
-    // mostrar ranking con posicion
     for (int i = 0; i < n; i++) {
         cout << "  #" << (i + 1) << "  ";
         vec[i]->resumen();
@@ -299,7 +317,28 @@ void rankingUsuarios() {
     pausar();
 }
 
-// menu
+void enviarNotificacionGlobal() {
+    limpiarPantalla();
+    cout << "  -- Enviar Notificacion Global --" << endl << endl;
+
+    if (listaUsuarios.esVacia()) {
+        cout << "  No hay usuarios registrados." << endl;
+        pausar();
+        return;
+    }
+
+    string mensaje;
+    cout << "  Escriba el mensaje para todos: "; getline(cin, mensaje);
+
+    for (uint i = 0; i < listaUsuarios.longitud(); i++) {
+        Usuario<int>* u = listaUsuarios.obtenerPos(i);
+        if (u) u->enviarNotificacion(mensaje, "Global");
+    }
+
+    cout << endl << "  Notificacion enviada a todos los usuarios." << endl;
+    pausar();
+}
+
 void menuUsuarios() {
     int opcion;
     do {
@@ -311,8 +350,9 @@ void menuUsuarios() {
         cout << "  4. Buscar recompensa" << endl;
         cout << "  5. Tabla de niveles" << endl;
         cout << "  6. Eliminar usuario" << endl;
-        cout << "  7. Modificar usuario" << endl;
+        cout << "  7. Modificar usuario / Jugar" << endl;
         cout << "  8. Ranking de usuarios" << endl;
+        cout << "  9. Enviar Notificacion Global" << endl;
         cout << "  0. Volver" << endl;
         cout << endl << "  Opcion: "; cin >> opcion; cin.ignore();
 
@@ -325,6 +365,7 @@ void menuUsuarios() {
         case 6: eliminarUsuario();         break;
         case 7: modificarUsuario();        break;
         case 8: rankingUsuarios();         break;
+        case 9: enviarNotificacionGlobal(); break;
         case 0: break;
         default:
             cout << endl << "  opcion invalida." << endl;
