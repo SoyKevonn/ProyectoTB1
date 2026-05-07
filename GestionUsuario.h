@@ -148,17 +148,6 @@ void agregarPuntosUsuario() {
     pausar();
 }
 
-void mostrarTablaDeNiveles() {
-    limpiarPantalla();
-    cout << "  -- Puntos necesarios por nivel --" << endl << endl;
-
-    Usuario<int> temp;
-    for (int n = 1; n <= 5; n++) {
-        cout << "  Nivel " << n << " : " << temp.puntosParaNivel(n) << " puntos" << endl;
-    }
-    pausar();
-}
-
 void eliminarUsuario() {
     limpiarPantalla();
     cout << "  -- Eliminar usuario --" << endl << endl;
@@ -265,39 +254,6 @@ void modificarUsuario() {
     pausar();
 }
 
-void rankingUsuarios() {
-    limpiarPantalla();
-    cout << "  -- Ranking de usuarios --" << endl << endl;
-
-    if (listaUsuarios.esVacia()) {
-        cout << "  No hay usuarios registrados." << endl;
-        pausar();
-        return;
-    }
-
-    vector<Usuario<int>*> vec;
-    for (uint i = 0; i < listaUsuarios.longitud(); i++)
-        vec.push_back(listaUsuarios.obtenerPos(i));
-
-    int n = (int)vec.size();
-    for (int i = 1; i < n; i++) {
-        Usuario<int>* key = vec[i];
-        int j = i - 1;
-        while (j >= 0 && vec[j]->getPuntos() < key->getPuntos()) {
-            vec[j + 1] = vec[j];
-            j--;
-        }
-        vec[j + 1] = key;
-    }
-
-    for (int i = 0; i < n; i++) {
-        cout << "  #" << (i + 1) << "  ";
-        vec[i]->resumen();
-    }
-
-    pausar();
-}
-
 void enviarNotificacionGlobal() {
     limpiarPantalla();
     cout << "  -- Enviar Notificacion Global --" << endl << endl;
@@ -328,11 +284,9 @@ void menuUsuarios() {
         cout << "  1. Registrar usuario" << endl;
         cout << "  2. Listar usuarios" << endl;
         cout << "  3. Agregar puntos" << endl;
-        cout << "  4. Tabla de niveles" << endl;
-        cout << "  5. Eliminar usuario" << endl;
-        cout << "  6. Modificar usuario / Jugar" << endl;
-        cout << "  7. Ranking de usuarios" << endl;
-        cout << "  8. Enviar Notificacion Global" << endl;
+        cout << "  4. Eliminar usuario" << endl;
+        cout << "  5. Modificar usuario" << endl;
+        cout << "  6. Enviar Notificacion Global" << endl;
         cout << "  0. Volver" << endl;
         cout << endl << "  Opcion: "; cin >> opcion; cin.ignore();
 
@@ -340,11 +294,9 @@ void menuUsuarios() {
         case 1: registrarUsuario();        break;
         case 2: listarUsuarios();          break;
         case 3: agregarPuntosUsuario();    break;
-        case 4: mostrarTablaDeNiveles();   break;
-        case 5: eliminarUsuario();         break;
-        case 6: modificarUsuario();        break;
-        case 7: rankingUsuarios();         break;
-        case 8: enviarNotificacionGlobal(); break;
+        case 4: eliminarUsuario();         break;
+        case 5: modificarUsuario();        break;
+        case 6: enviarNotificacionGlobal(); break;
         case 0: break;
         default:
             cout << endl << "  opcion invalida." << endl;
