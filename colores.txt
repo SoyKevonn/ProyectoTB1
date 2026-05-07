@@ -1,0 +1,21 @@
+Los Colores
+¿Como se dice 'Rojo'?|Red|Blue|Green|Red|1
+¿Que color es 'Yellow'?|Verde|Amarillo|Naranja|Amarillo|1
+¿Como se dice 'Azul'?|Blue|Red|Yellow|Blue|1
+¿Que color es 'Green'?|Verde|Blanco|Negro|Verde|1
+¿Como se dice 'Blanco'?|Black|White|Grey|White|1
+¿Que color es 'Black'?|Blanco|Gris|Negro|Negro|1
+¿Como se dice 'Rosado'?|Pink|Purple|Magenta|Pink|1
+¿Que color se forma al mezclar rojo y amarillo en ingles?|Purple|Orange|Pink|Orange|2
+¿Como se dice 'Gris'?|Light|Dark|Grey|Grey|2
+¿Como se dice 'Marron'?|Brown|Grey|Purple|Brown|2
+Traduce 'La manzana es roja'|The apple is green|The apple is red|The apple is yellow|The apple is red|2
+Traduce 'El cielo es azul'|The sky is red|The sky is blue|The sky is green|The sky is blue|2
+¿Como se dice 'Morado'?|Pink|Purple|Brown|Purple|2
+¿Que color es 'Gold'?|Plata|Bronce|Dorado|Dorado|2
+Traduce 'El tono turquesa es hermoso'|The turquoise shade is beautiful|The teal color is ugly|The cyan hue is nice|The turquoise shade is beautiful|3
+¿Como se dice 'Carmesi'?|Crimson|Scarlet|Burgundy|Crimson|3
+¿Como se dice 'Cian'?|Cyan|Teal|Navy|Cyan|3
+¿Que color es 'Magenta'?|Cian|Magenta|Amarillo|Magenta|3
+¿Como se dice 'Granate' (Rojo oscuro)?|Maroon|Crimson|Scarlet|Maroon|3
+¿Cual es el color 'Añil'?|Cyan|Indigo|Violet|Indigo|3

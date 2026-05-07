@@ -1,0 +1,21 @@
+Comida y Bebidas
+¿Como se dice 'Agua'?|Water|Milk|Juice|Water|1
+¿Que significa 'Apple'?|Pera|Uva|Manzana|Manzana|1
+¿Como se dice 'Leche'?|Water|Milk|Cheese|Milk|1
+¿Que significa 'Cheese'?|Leche|Mantequilla|Queso|Queso|1
+¿Como se dice 'Jugo'?|Water|Juice|Soda|Juice|1
+¿Como se dice 'Pan'?|Cake|Bread|Rice|Bread|1
+¿Que significa 'Rice'?|Sopa|Pasta|Arroz|Arroz|1
+Traduce 'Quiero la carne bien cocida'|I want the meat raw|I want the beef rare|I want the meat well done|I want the meat well done|2
+¿Como se dice 'Pollo'?|Chicken|Beef|Pork|Chicken|2
+¿Como se dice 'Pescado'?|Meat|Chicken|Fish|Fish|2
+¿Que significa 'Meat'?|Pollo|Carne|Pescado|Carne|2
+¿Como se dice 'Huevo'?|Egg|Milk|Cheese|Egg|2
+Traduce 'La sopa esta caliente'|The soup is cold|The soup is hot|The tea is hot|The soup is hot|2
+¿Como se dice 'Fresa'?|Apple|Strawberry|Banana|Strawberry|2
+¿Cual es la traduccion de 'Berenjena'?|Zucchini|Eggplant|Cabbage|Eggplant|3
+¿Como se dice 'Ajo'?|Onion|Garlic|Pepper|Garlic|3
+¿Como se dice 'Calabaza'?|Squash|Pumpkin|Cucumber|Pumpkin|3
+¿Como se dice 'Esparragos'?|Asparagus|Celery|Broccoli|Asparagus|3
+¿Como se dice 'Apio'?|Celery|Lettuce|Cabbage|Celery|3
+¿Como se dice 'Calabacin' o 'Zapatillo'?|Cucumber|Zucchini|Pumpkin|Zucchini|3

@@ -26,7 +26,8 @@ private:
     string correo;
     int nivel;
     int puntosTotales;
-
+    int leccionesCompletadas;
+    string estadoRecompensasPendiente;
     Lista<Recompensa<int>*> recompensas;
     Perfil* perfil;
     Suscripcion<int>* suscripcion;
@@ -63,7 +64,8 @@ public:
     string getCorreo() { return correo; }
     int    getNivel() { return nivel; }
     int    getPuntos() { return puntosTotales; }
-
+    int getLeccionesCompletadas() { return leccionesCompletadas; }
+    
     // setters
     void setNombre(string n) { nombre = n; }
     void setApellido(string a) { apellido = a; }
@@ -71,20 +73,32 @@ public:
     void setCorreo(string c) { correo = c; }
     void setNivel(int n) { nivel = n; }
     void setPuntosTotales(int p) { puntosTotales = p; }
-
+    void setLeccionesCompletadas(int l) { leccionesCompletadas = l; }
+    void setEstadoRecompensasPendiente(string estado) {
+        estadoRecompensasPendiente = estado;
+    }
     Perfil* getPerfil() { return perfil; }
     Suscripcion<int>* getSuscripcion() { return suscripcion; }
 
     void enviarNotificacion(string m, string f) {
         notificaciones.agregaFinal(new Notificacion(m, f));
     }
-
-    // agrega una recompensa al catalogo del usuario — O(1)
+    void aplicarEstadoRecompensas() {
+        if (estadoRecompensasPendiente.empty()) return;
+        for (uint i = 0; i < recompensas.longitud() && i < estadoRecompensasPendiente.size(); i++) {
+            if (estadoRecompensasPendiente[i] == '1') {
+                Recompensa<int>* r = recompensas.obtenerPos(i);
+                if (r) r->setObtenida(true);
+            }
+        }
+        estadoRecompensasPendiente = "";
+    }
+    // agrega una recompensa al catalogo del usuario
     void agregarRecompensa(Recompensa<int>* r) {
         recompensas.agregaFinal(r);
     }
 
-    // agrega puntos al usuario y revisa si sube de nivel — O(n)
+    // agrega puntos al usuario y revisa si sube de nivel
     // lambda 1: calcula el nivel segun los puntos acumulados
     void agregarPuntos(int puntos) {
         if (puntos <= 0) return;
@@ -208,7 +222,17 @@ public:
             archivo << id << "|" << nombre << "|" << apellido << "|"
                 << idiomaNativo << "|" << correo << "|"
                 << nivel << "|" << puntosTotales << "|"
-                << suscripcion->getTipo() << "|" << perfil->getRacha() << "|" << perfil->getVidas() << "\n";
+                << suscripcion->getTipo() << "|" << perfil->getRacha()
+                << "|" << perfil->getVidas() << "|"
+                << leccionesCompletadas << "|";
+
+            // guardar cuantas recompensas estan obtenidas como bitmask
+            // ejemplo: 1010 significa recompensa 0 y 2 obtenidas
+            for (uint i = 0; i < recompensas.longitud(); i++) {
+                Recompensa<int>* r = recompensas.obtenerPos(i);
+                archivo << (r && r->estaObtenida() ? "1" : "0");
+            }
+            archivo << "\n";
             archivo.close();
         }
     }
@@ -231,7 +255,6 @@ public:
         u->setNivel(stoi(partes[5]));
         u->setPuntosTotales(stoi(partes[6]));
 
-        // Cargar nuevos atributos si el archivo ya fue actualizado
         if (partes.size() >= 10) {
             if (partes[7] == "Premium") {
                 u->getSuscripcion()->setTipo("Premium");
@@ -239,6 +262,14 @@ public:
             }
             u->getPerfil()->setRacha(stoi(partes[8]));
             u->getPerfil()->setVidas(stoi(partes[9]));
+        }
+        if (partes.size() >= 11) {
+            u->setLeccionesCompletadas(stoi(partes[10]));
+        }
+
+        // guardar el estado de recompensas para aplicar despues de asignarRecompensasBase
+        if (partes.size() >= 12) {
+            u->setEstadoRecompensasPendiente(partes[11]);
         }
 
         return u;

@@ -1,0 +1,21 @@
+Verbos Basicos
+¿Como se dice 'Correr' en ingles?|Run|Walk|Jump|Run|1
+¿Que significa la palabra 'Sleep'?|Comer|Dormir|Hablar|Dormir|1
+¿Como se dice 'Hablar' en ingles?|Speak|Listen|Hear|Speak|1
+¿Que significa 'Jump'?|Caminar|Volar|Saltar|Saltar|1
+¿Como se dice 'Beber'?|Eat|Drink|Swallow|Drink|1
+¿Cual es el verbo 'Caminar'?|Run|Walk|Drive|Walk|1
+¿Como se dice 'Comer'?|Eat|Bite|Chew|Eat|1
+¿Cual es el pasado simple del verbo 'Go'?|Goes|Went|Gone|Went|2
+Traduce 'Ella juega en el parque'|She play in the park|She plays in the park|She playing in the park|She plays in the park|2
+¿Cual es el pasado de 'Eat'?|Eated|Ate|Eaten|Ate|2
+¿Cual es el gerundio de 'Swim'?|Swimmed|Swimming|Swam|Swimming|2
+Traduce 'Ellos estan corriendo'|They run|They running|They are running|They are running|2
+¿Cual es el pasado de 'See' (Ver)?|Seed|Saw|Seen|Saw|2
+¿Como se dice 'Compro' (Pasado de Buy)?|Buyed|Bought|Brought|Bought|2
+¿Cual es el participio pasado de 'Write'?|Wrote|Writing|Written|Written|3
+Traduce 'Nosotros entenderemos'|We understand|We will understand|We understood|We will understand|3
+¿Como se dice 'Lograr' en ingles?|Achieve|Try|Fail|Achieve|3
+¿Cual es el participio pasado de 'Fly'?|Flew|Flown|Flyed|Flown|3
+Traduce 'Yo habia comido'|I have ate|I had eaten|I had ate|I had eaten|3
+¿Como se dice 'Dudar'?|Doubt|Think|Wonder|Doubt|3

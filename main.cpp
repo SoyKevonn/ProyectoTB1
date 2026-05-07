@@ -1,13 +1,18 @@
 #include <iostream>
 #include <limits>
 #include "GestionUsuario.h"
+#include "GestionLecciones.h"
 using namespace std;
+
+GestionLecciones* gL = new GestionLecciones();
 
 void pausar();
 void limpiarPantalla();
 
 int main() {
     cargarUsuarios();
+
+    srand(time(NULL));
 
     int opcion;
     do {
@@ -18,19 +23,19 @@ int main() {
         //Salvador
         cout << "  2. Lecciones y ejercicios" << endl;
         //Alfredo
-        cout << "  3. Idiomas y progreso" << endl;
+        cout << "  3. Progreso" << endl;
         cout << "  0. Salir" << endl;
-        cout << endl <<"  Opcion: "; cin >> opcion;
+        cout << endl << "  Opcion: "; cin >> opcion; cin.ignore();
 
         switch (opcion) {
         case 1: menuUsuarios(); break;
         case 2:
             limpiarPantalla();
-            //pendiente
+            gL->mostrarMenu();
             break;
         case 3:
             limpiarPantalla();
-            //Pendiente
+            // pendiente Alfredo
             break;
         case 0:
             cout << endl << "  Hasta luego." << endl;
@@ -44,6 +49,8 @@ int main() {
     // liberar memoria de usuarios
     for (uint i = 0; i < listaUsuarios.longitud(); i++)
         delete listaUsuarios.obtenerPos(i);
+
+    delete gL;
 
     return 0;
 }

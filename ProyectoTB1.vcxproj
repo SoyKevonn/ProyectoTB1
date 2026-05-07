@@ -114,13 +114,27 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Ejercicio.h" />
+    <ClInclude Include="GestionLecciones.h" />
     <ClInclude Include="GestionUsuario.h" />
+    <ClInclude Include="Leccion.h" />
     <ClInclude Include="Lista.h" />
+    <ClInclude Include="Nodo.h" />
     <ClInclude Include="Notificacion.h" />
     <ClInclude Include="Perfil.h" />
+    <ClInclude Include="Pila.h" />
+    <ClInclude Include="Pregunta.h" />
     <ClInclude Include="Recompensa.h" />
     <ClInclude Include="Suscripcion.h" />
     <ClInclude Include="Usuario.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="animales.txt" />
+    <Text Include="colores.txt" />
+    <Text Include="comidas.txt" />
+    <Text Include="familia.txt" />
+    <Text Include="usuarios.txt" />
+    <Text Include="verbos.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

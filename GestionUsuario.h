@@ -47,6 +47,7 @@ void cargarUsuarios() {
         Usuario<int>* u = Usuario<int>::cargarDesdeLinea(linea);
         if (u != nullptr) {
             asignarRecompensasBase(u);
+            u->aplicarEstadoRecompensas(); 
             listaUsuarios.agregaFinal(u);
             if (u->getId() >= contadorIdUsuario)
                 contadorIdUsuario = u->getId() + 1;
@@ -85,8 +86,13 @@ void registrarUsuario() {
     cout << "  Suscripcion (1: Gratis, 2: Premium): "; cin >> tipoSub;
     cin.ignore();
 
+    int nuevoId;
+    do {
+        nuevoId = 100 + rand() % 900; 
+    } while (buscarUsuarioPorId(nuevoId) != nullptr);
+
     Usuario<int>* nuevo = new Usuario<int>(
-        contadorIdUsuario++, nombre, apellido, idioma, correo
+        nuevoId, nombre, apellido, idioma, correo
     );
 
     if (tipoSub == 2) {
@@ -138,31 +144,6 @@ void agregarPuntosUsuario() {
         reescribirArchivoUsuarios();
         cout << endl << "  Puntos actualizados (Se aplico multiplicador si es Premium)." << endl;
         u->mostrar();
-    }
-    pausar();
-}
-
-void buscarRecompensaUsuario() {
-    limpiarPantalla();
-    cout << "  -- Buscar recompensa --" << endl << endl;
-
-    int id;
-    string nombreRecompensa;
-    cout << "  ID del usuario    : "; cin >> id; cin.ignore();
-    cout << "  Nombre recompensa : "; getline(cin, nombreRecompensa);
-
-    Usuario<int>* u = buscarUsuarioPorId(id);
-    if (u == nullptr) {
-        cout << endl << "  Usuario no encontrado." << endl;
-    }
-    else {
-        Recompensa<int>* r = u->buscarRecompensa(nombreRecompensa);
-        if (r == nullptr)
-            cout << endl << "  Recompensa no encontrada." << endl;
-        else {
-            cout << endl << "  Recompensa encontrada:" << endl;
-            r->mostrar();
-        }
     }
     pausar();
 }
@@ -347,12 +328,11 @@ void menuUsuarios() {
         cout << "  1. Registrar usuario" << endl;
         cout << "  2. Listar usuarios" << endl;
         cout << "  3. Agregar puntos" << endl;
-        cout << "  4. Buscar recompensa" << endl;
-        cout << "  5. Tabla de niveles" << endl;
-        cout << "  6. Eliminar usuario" << endl;
-        cout << "  7. Modificar usuario / Jugar" << endl;
-        cout << "  8. Ranking de usuarios" << endl;
-        cout << "  9. Enviar Notificacion Global" << endl;
+        cout << "  4. Tabla de niveles" << endl;
+        cout << "  5. Eliminar usuario" << endl;
+        cout << "  6. Modificar usuario / Jugar" << endl;
+        cout << "  7. Ranking de usuarios" << endl;
+        cout << "  8. Enviar Notificacion Global" << endl;
         cout << "  0. Volver" << endl;
         cout << endl << "  Opcion: "; cin >> opcion; cin.ignore();
 
@@ -360,12 +340,11 @@ void menuUsuarios() {
         case 1: registrarUsuario();        break;
         case 2: listarUsuarios();          break;
         case 3: agregarPuntosUsuario();    break;
-        case 4: buscarRecompensaUsuario(); break;
-        case 5: mostrarTablaDeNiveles();   break;
-        case 6: eliminarUsuario();         break;
-        case 7: modificarUsuario();        break;
-        case 8: rankingUsuarios();         break;
-        case 9: enviarNotificacionGlobal(); break;
+        case 4: mostrarTablaDeNiveles();   break;
+        case 5: eliminarUsuario();         break;
+        case 6: modificarUsuario();        break;
+        case 7: rankingUsuarios();         break;
+        case 8: enviarNotificacionGlobal(); break;
         case 0: break;
         default:
             cout << endl << "  opcion invalida." << endl;
