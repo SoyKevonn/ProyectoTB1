@@ -1,21 +1,21 @@
 Miembros de la Familia
-¿Como se dice 'Madre'?|Mother|Sister|Aunt|Mother|1
-¿Que significa 'Brother'?|Primo|Tio|Hermano|Hermano|1
-¿Como se dice 'Padre'?|Father|Brother|Uncle|Father|1
-¿Que significa 'Sister'?|Hermana|Tia|Prima|Hermana|1
-¿Como se dice 'Tio'?|Uncle|Aunt|Cousin|Uncle|1
-¿Que significa 'Aunt'?|Tio|Tia|Abuela|Tia|1
-¿Como se dice 'Abuelo'?|Grandpa|Uncle|Father|Grandpa|1
-¿Como se dice 'Abuela'?|Grandma|Aunt|Mother|Grandma|2
-¿Como se dice 'Primo' en ingles?|Nephew|Cousin|Uncle|Cousin|2
-¿Como se dice 'Hijo'?|Daughter|Son|Nephew|Son|2
-¿Como se dice 'Hija'?|Sister|Niece|Daughter|Daughter|2
+Como se dice 'Madre'?|Mother|Sister|Aunt|Mother|1
+Que significa 'Brother'?|Primo|Tio|Hermano|Hermano|1
+Como se dice 'Padre'?|Father|Brother|Uncle|Father|1
+Que significa 'Sister'?|Hermana|Tia|Prima|Hermana|1
+Como se dice 'Tio'?|Uncle|Aunt|Cousin|Uncle|1
+Que significa 'Aunt'?|Tio|Tia|Abuela|Tia|1
+Como se dice 'Abuelo'?|Grandpa|Uncle|Father|Grandpa|1
+Como se dice 'Abuela'?|Grandma|Aunt|Mother|Grandma|2
+Como se dice 'Primo' en ingles?|Nephew|Cousin|Uncle|Cousin|2
+Como se dice 'Hijo'?|Daughter|Son|Nephew|Son|2
+Como se dice 'Hija'?|Sister|Niece|Daughter|Daughter|2
 Traduce 'Mi familia es grande'|My family is small|My family is big|My house is big|My family is big|2
-¿Como se dice 'Esposo'?|Wife|Husband|Brother|Husband|2
-¿Que significa 'Parents'?|Parientes|Padres|Primos|Padres|2
-¿Que significa 'Father-in-law'?|Padrastro|Suegro|Cuñado|Suegro|3
-¿Como se dice 'Sobrino'?|Niece|Nephew|Sibling|Nephew|3
-¿Como se dice 'Sobrina'?|Niece|Nephew|Cousin|Niece|3
-¿Como se dice 'Cuñada'?|Sister-in-law|Mother-in-law|Daughter-in-law|Sister-in-law|3
-¿Como se dice 'Gemelos'?|Twins|Siblings|Cousins|Twins|3
-¿Como se dice 'Padrastro'?|Stepfather|Father-in-law|Godfather|Stepfather|3
+Como se dice 'Esposo'?|Wife|Husband|Brother|Husband|2
+Que significa 'Parents'?|Parientes|Padres|Primos|Padres|2
+Que significa 'Father-in-law'?|Padrastro|Suegro|Cuñado|Suegro|3
+Como se dice 'Sobrino'?|Niece|Nephew|Sibling|Nephew|3
+Como se dice 'Sobrina'?|Niece|Nephew|Cousin|Niece|3
+Como se dice 'Cuñada'?|Sister-in-law|Mother-in-law|Daughter-in-law|Sister-in-law|3
+Como se dice 'Gemelos'?|Twins|Siblings|Cousins|Twins|3
+Como se dice 'Padrastro'?|Stepfather|Father-in-law|Godfather|Stepfather|3

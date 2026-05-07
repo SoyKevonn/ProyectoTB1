@@ -59,14 +59,48 @@
     <ClInclude Include="Pila.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="Fondo.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="Cola.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="EstadisticaUsuario.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="GestionProgreso.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="HistorialSesion.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="NivelInfo.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="Progreso.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="Sesion.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="verbos.txt" />
-    <Text Include="comidas.txt" />
-    <Text Include="familia.txt" />
-    <Text Include="colores.txt" />
-    <Text Include="animales.txt" />
     <Text Include="usuarios.txt">
+      <Filter>Archivos de recursos</Filter>
+    </Text>
+    <Text Include="verbos.txt">
+      <Filter>Archivos de recursos</Filter>
+    </Text>
+    <Text Include="familia.txt">
+      <Filter>Archivos de recursos</Filter>
+    </Text>
+    <Text Include="comidas.txt">
+      <Filter>Archivos de recursos</Filter>
+    </Text>
+    <Text Include="colores.txt">
+      <Filter>Archivos de recursos</Filter>
+    </Text>
+    <Text Include="animales.txt">
       <Filter>Archivos de recursos</Filter>
     </Text>
   </ItemGroup>

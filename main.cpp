@@ -2,6 +2,8 @@
 #include <limits>
 #include "GestionUsuario.h"
 #include "GestionLecciones.h"
+#include "GestionProgreso.h"
+#include "Fondo.h"
 using namespace std;
 
 GestionLecciones* gL = new GestionLecciones();
@@ -11,46 +13,51 @@ void limpiarPantalla();
 
 int main() {
     cargarUsuarios();
-
     srand(time(NULL));
 
-    int opcion;
+    int opcion = -1;
     do {
         limpiarPantalla();
-        mostrarEncabezado();
-        //Kevin
-        cout << "  1. Usuarios y recompensas" << endl;
-        //Salvador
-        cout << "  2. Lecciones y ejercicios" << endl;
-        //Alfredo
-        cout << "  3. Progreso" << endl;
-        cout << "  0. Salir" << endl;
-        cout << endl << "  Opcion: "; cin >> opcion; cin.ignore();
+        dibujarFondoMenu();
+
+        // Kevin
+        Console::SetCursorPosition(17, 13); cout << "  1. Usuarios y recompensas";
+        // Salvador
+        Console::SetCursorPosition(17, 18); cout << "  2. Lecciones y ejercicios";
+        // Alfredo
+        Console::SetCursorPosition(17, 23); cout << "  3. Progreso";
+
+        char tecla = _getch();
+
+        if (tecla >= '0' && tecla <= '3')
+            opcion = tecla - '0';
+        else
+            opcion = -1;  
 
         switch (opcion) {
-        case 1: menuUsuarios(); break;
+        case 1:
+            menuUsuarios();
+            break;
         case 2:
             limpiarPantalla();
             gL->mostrarMenu();
             break;
         case 3:
             limpiarPantalla();
-            // pendiente Alfredo
+            menuProgreso(gL);
             break;
         case 0:
-            cout << endl << "  Hasta luego." << endl;
             break;
         default:
-            cout << endl << "  Opcion invalida." << endl;
-            pausar();
+            break;
         }
+
     } while (opcion != 0);
 
-    // liberar memoria de usuarios
+    //liberar memoria de usuarios
     for (uint i = 0; i < listaUsuarios.longitud(); i++)
         delete listaUsuarios.obtenerPos(i);
 
     delete gL;
-
     return 0;
 }

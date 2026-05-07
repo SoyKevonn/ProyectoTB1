@@ -2,7 +2,6 @@
 #include "Pila.h"
 #include <vector>
 
-
 template<typename T>
 class Ejercicio {
 private:
@@ -13,7 +12,9 @@ public:
 	int totalPreguntas;
 	int acertadas;
 
-	Ejercicio(vector<T> preguntas) : acertadas(0) {
+	// usuarioSeed: ID del usuario — garantiza que cada usuario reciba preguntas distintas
+	// intentoUsuario: cuantas veces ha jugado esta leccion — rota las preguntas en cada reintento
+	Ejercicio(vector<T> preguntas, int usuarioSeed = 0, int intentoUsuario = 0) : acertadas(0) {
 		static int contadorId = 0;
 		idEjercicio = contadorId++;
 
@@ -24,10 +25,13 @@ public:
 			else dificiles.push_back(p);
 		}
 
-		//Lambda con un Fisher-Yates Shuffle para mezclar las preguntas
-
-		auto shuffleVector = [](vector<T>& vec) {
+		// Fisher-Yates Shuffle con seed unica por usuario e intento
+		// Kevin y Alfredo ven preguntas distintas; cada reintento tambien rota el orden
+		auto shuffleVector = [&](vector<T>& vec) {
 			int n = (int)vec.size();
+			// combinar ID de usuario + intento + idEjercicio como seed
+			unsigned int seed = (unsigned int)(usuarioSeed * 1000 + intentoUsuario * 100 + idEjercicio);
+			srand(seed);
 			for (int i = n - 1; i > 0; --i) {
 				int j = rand() % (i + 1);
 				swap(vec[i], vec[j]);
@@ -40,52 +44,46 @@ public:
 
 		totalPreguntas = 0;
 
-		// 1. Insertamos 1 Difícil (quedará al fondo de la pila)
-		for (int k = 0; k < 1 && k < dificiles.size(); ++k) {
+		// Tomar hasta 2 dificiles, 3 medias, 4 faciles — aprovecha mejor el banco amplio
+		// se insertan en orden inverso: dificiles al fondo de la pila, faciles en la cima (salen primero)
+		for (int k = 0; k < 2 && k < (int)dificiles.size(); ++k) {
 			preguntaspendientes.push(dificiles[k]);
 			totalPreguntas++;
 		}
-
-		// 2. Insertamos  2 Medias
-		for (int k = 0; k < 2 && k < medios.size(); ++k) {
+		for (int k = 0; k < 3 && k < (int)medios.size(); ++k) {
 			preguntaspendientes.push(medios[k]);
 			totalPreguntas++;
 		}
-
-		// 3. Insertamos 3 Fáciles (quedarán en la cima, serán las primeras en salir)
-		for (int k = 0; k < 3 && k < faciles.size(); ++k) {
+		for (int k = 0; k < 4 && k < (int)faciles.size(); ++k) {
 			preguntaspendientes.push(faciles[k]);
 			totalPreguntas++;
 		}
 	}
 
-
 	T obtenerSiguientePregunta();
 	void registarRespuesta(bool respuestaCorrecta);
 	void reinsertarPregunta(T p);
 	bool Terminado();
-
-
 };
 
-	template<typename T>
-	T Ejercicio<T>::obtenerSiguientePregunta() {
-		if (preguntaspendientes.isEmpty()) return T();
-		return preguntaspendientes.pop();
-	}
+template<typename T>
+T Ejercicio<T>::obtenerSiguientePregunta() {
+	if (preguntaspendientes.isEmpty()) return T();
+	return preguntaspendientes.pop();
+}
 
-	template<typename T>
-	void Ejercicio<T>::registarRespuesta(bool respuestaCorrecta) {
-		if (respuestaCorrecta) acertadas++;
-		if (!respuestaCorrecta && acertadas >= 0) acertadas --;
-	}
+template<typename T>
+void Ejercicio<T>::registarRespuesta(bool respuestaCorrecta) {
+	if (respuestaCorrecta) acertadas++;
+	if (!respuestaCorrecta && acertadas >= 0) acertadas--;
+}
 
-	template<typename T>
-	void Ejercicio<T>::reinsertarPregunta(T p) {
-		preguntaspendientes.push(p);
-	}
+template<typename T>
+void Ejercicio<T>::reinsertarPregunta(T p) {
+	preguntaspendientes.push(p);
+}
 
-	template<typename T>
-	bool Ejercicio<T>::Terminado() {
-		return preguntaspendientes.isEmpty();
-	}
+template<typename T>
+bool Ejercicio<T>::Terminado() {
+	return preguntaspendientes.isEmpty();
+}

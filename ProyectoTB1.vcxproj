@@ -114,17 +114,25 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Cola.h" />
     <ClInclude Include="Ejercicio.h" />
+    <ClInclude Include="EstadisticaUsuario.h" />
+    <ClInclude Include="Fondo.h" />
     <ClInclude Include="GestionLecciones.h" />
+    <ClInclude Include="GestionProgreso.h" />
     <ClInclude Include="GestionUsuario.h" />
+    <ClInclude Include="HistorialSesion.h" />
     <ClInclude Include="Leccion.h" />
     <ClInclude Include="Lista.h" />
+    <ClInclude Include="NivelInfo.h" />
     <ClInclude Include="Nodo.h" />
     <ClInclude Include="Notificacion.h" />
     <ClInclude Include="Perfil.h" />
     <ClInclude Include="Pila.h" />
     <ClInclude Include="Pregunta.h" />
+    <ClInclude Include="Progreso.h" />
     <ClInclude Include="Recompensa.h" />
+    <ClInclude Include="Sesion.h" />
     <ClInclude Include="Suscripcion.h" />
     <ClInclude Include="Usuario.h" />
   </ItemGroup>

@@ -1,1 +1,3 @@
-701|Kevin|Carrillo|Espaniol|kevinjoel.carrillor@gmail.com|4|840|Premium|0|5|-842150447|1110
+552|Kevin|Carrillo|Espaniol|kevin@gmail.com|4|1160|Premium|0|5|1111
+629|Alfredo|Vidal|Espaniol|alfredo@gmail.com|2|240|Premium|0|1|1100
+947|Salvador|Carrascal|Espaniol|salva@gmail.com|2|240|Premium|0|1|1100

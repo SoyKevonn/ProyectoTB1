@@ -92,12 +92,14 @@ public:
             misLecciones.obtenerPos(i)->setDesbloqueada(false);
         }
     }
-    
+
     void ejecutarLeccion(uint indice) {
         Leccion* l = misLecciones.obtenerPos(indice);
         if (!l->cargarArchivo()) return;
 
-        Ejercicio<Pregunta> sesion(l->getPreguntas());
+        // seed = ID del usuario; intento = lecciones completadas (cambia cada vez que aprueba)
+        int intentoLeccion = usuarioActivo->getLeccionesCompletadas();
+        Ejercicio<Pregunta> sesion(l->getPreguntas(), usuarioActivo->getId(), intentoLeccion);
 
         limpiarPantalla();
         cout << "\n  Iniciando: " << l->getTema() << endl;

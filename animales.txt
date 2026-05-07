@@ -1,21 +1,21 @@
 Animales Salvajes y Domesticos
-¿Como se dice 'Perro'?|Cat|Dog|Bird|Dog|1
-¿Que significa 'Bird'?|Gato|Pez|Pajaro|Pajaro|1
-¿Como se dice 'Gato'?|Dog|Cat|Mouse|Cat|1
-¿Que significa 'Horse'?|Vaca|Caballo|Cerdo|Caballo|1
-¿Como se dice 'Pez'?|Fish|Shark|Whale|Fish|1
-¿Como se dice 'Cerdo'?|Cow|Pig|Sheep|Pig|1
-¿Que significa 'Cow'?|Caballo|Oveja|Vaca|Vaca|1
-¿Como se dice 'Serpiente'?|Snake|Lizard|Frog|Snake|2
+Como se dice 'Perro'?|Cat|Dog|Bird|Dog|1
+Que significa 'Bird'?|Gato|Pez|Pajaro|Pajaro|1
+Como se dice 'Gato'?|Dog|Cat|Mouse|Cat|1
+Que significa 'Horse'?|Vaca|Caballo|Cerdo|Caballo|1
+Como se dice 'Pez'?|Fish|Shark|Whale|Fish|1
+Como se dice 'Cerdo'?|Cow|Pig|Sheep|Pig|1
+Que significa 'Cow'?|Caballo|Oveja|Vaca|Vaca|1
+Como se dice 'Serpiente'?|Snake|Lizard|Frog|Snake|2
 Traduce 'El leon caza de noche'|The lion sleeps at night|The lion hunts at night|The tiger hunts at night|The lion hunts at night|2
-¿Como se dice 'Oso'?|Beer|Bear|Boar|Bear|2
-¿Como se dice 'Tiburon'?|Dolphin|Shark|Octopus|Shark|2
+Como se dice 'Oso'?|Beer|Bear|Boar|Bear|2
+Como se dice 'Tiburon'?|Dolphin|Shark|Octopus|Shark|2
 Traduce 'La tortuga es lenta'|The turtle is fast|The turtle is slow|The frog is slow|The turtle is slow|2
-¿Como se dice 'Lobo'?|Wolf|Fox|Dog|Wolf|2
-¿Que significa 'Fox'?|Lobo|Zorro|Oso|Zorro|2
-¿Que tipo de animal es un 'Whale' (Ballena)?|Mammal|Reptile|Amphibian|Mammal|3
-¿Cual de estos es un ave rapace?|Eagle|Sparrow|Pigeon|Eagle|3
-¿Como se dice 'Murcielago'?|Bat|Rat|Owl|Bat|3
-¿Como se dice 'Buho'?|Owl|Eagle|Hawk|Owl|3
-¿Cual es la traduccion de 'Cisne'?|Duck|Swan|Goose|Swan|3
-¿Como se dice 'Rinoceronte'?|Hippo|Elephant|Rhinoceros|Rhinoceros|3
+Como se dice 'Lobo'?|Wolf|Fox|Dog|Wolf|2
+Que significa 'Fox'?|Lobo|Zorro|Oso|Zorro|2
+Que tipo de animal es un 'Whale' (Ballena)?|Mammal|Reptile|Amphibian|Mammal|3
+Cual de estos es un ave rapace?|Eagle|Sparrow|Pigeon|Eagle|3
+Como se dice 'Murcielago'?|Bat|Rat|Owl|Bat|3
+Como se dice 'Buho'?|Owl|Eagle|Hawk|Owl|3
+Cual es la traduccion de 'Cisne'?|Duck|Swan|Goose|Swan|3
+Como se dice 'Rinoceronte'?|Hippo|Elephant|Rhinoceros|Rhinoceros|3

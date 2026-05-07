@@ -26,7 +26,7 @@ private:
     string correo;
     int nivel;
     int puntosTotales;
-    int leccionesCompletadas;
+    int leccionesCompletadas;           // inicializado en 0 en ambos constructores
     string estadoRecompensasPendiente;
     Lista<Recompensa<int>*> recompensas;
     Perfil* perfil;
@@ -37,14 +37,14 @@ public:
     // constructores
     Usuario()
         : id(T()), nombre(""), apellido(""), idiomaNativo(""),
-        correo(""), nivel(1), puntosTotales(0) {
+        correo(""), nivel(1), puntosTotales(0), leccionesCompletadas(0) {
         perfil = new Perfil();
         suscripcion = new Suscripcion<int>(1, "Gratis", 1.0);
     }
 
     Usuario(T id, string nombre, string apellido, string idiomaNativo, string correo)
-        : id(id), nombre(nombre), apellido(apellido), idiomaNativo(idiomaNativo), correo(correo),
-        nivel(1), puntosTotales(0) {
+        : id(id), nombre(nombre), apellido(apellido), idiomaNativo(idiomaNativo),
+        correo(correo), nivel(1), puntosTotales(0), leccionesCompletadas(0) {
         perfil = new Perfil();
         suscripcion = new Suscripcion<int>(1, "Gratis", 1.0);
     }
@@ -52,7 +52,7 @@ public:
     ~Usuario() {
         delete perfil;
         delete suscripcion;
-        for (uint i = 0; i < recompensas.longitud(); i++) delete recompensas.obtenerPos(i);
+        for (uint i = 0; i < recompensas.longitud(); i++)   delete recompensas.obtenerPos(i);
         for (uint i = 0; i < notificaciones.longitud(); i++) delete notificaciones.obtenerPos(i);
     }
 
@@ -64,8 +64,8 @@ public:
     string getCorreo() { return correo; }
     int    getNivel() { return nivel; }
     int    getPuntos() { return puntosTotales; }
-    int getLeccionesCompletadas() { return leccionesCompletadas; }
-    
+    int    getLeccionesCompletadas() { return leccionesCompletadas; }
+
     // setters
     void setNombre(string n) { nombre = n; }
     void setApellido(string a) { apellido = a; }
@@ -73,16 +73,18 @@ public:
     void setCorreo(string c) { correo = c; }
     void setNivel(int n) { nivel = n; }
     void setPuntosTotales(int p) { puntosTotales = p; }
-    void setLeccionesCompletadas(int l) { leccionesCompletadas = l; }
+    void setLeccionesCompletadas(int l) { leccionesCompletadas = (l < 0 ? 0 : l); }
     void setEstadoRecompensasPendiente(string estado) {
         estadoRecompensasPendiente = estado;
     }
+
     Perfil* getPerfil() { return perfil; }
     Suscripcion<int>* getSuscripcion() { return suscripcion; }
 
     void enviarNotificacion(string m, string f) {
         notificaciones.agregaFinal(new Notificacion(m, f));
     }
+
     void aplicarEstadoRecompensas() {
         if (estadoRecompensasPendiente.empty()) return;
         for (uint i = 0; i < recompensas.longitud() && i < estadoRecompensasPendiente.size(); i++) {
@@ -93,7 +95,7 @@ public:
         }
         estadoRecompensasPendiente = "";
     }
-    // agrega una recompensa al catalogo del usuario
+
     void agregarRecompensa(Recompensa<int>* r) {
         recompensas.agregaFinal(r);
     }
@@ -103,7 +105,6 @@ public:
     void agregarPuntos(int puntos) {
         if (puntos <= 0) return;
 
-        // Aplicar multiplicador de suscripción
         int puntosFinales = puntos * suscripcion->getMultiplicador();
         puntosTotales += puntosFinales;
 
@@ -128,7 +129,6 @@ public:
         auto notificarDesbloqueo = [](const string& nombreR) {
             cout << "  *** Recompensa desbloqueada: " << nombreR << " ***" << endl;
             };
-
         for (uint i = 0; i < recompensas.longitud(); i++) {
             Recompensa<int>* r = recompensas.obtenerPos(i);
             if (r != nullptr && r->intentarDesbloquear(puntosTotales))
@@ -136,7 +136,6 @@ public:
         }
     }
 
-    // ayuda de ia
     // busca una recompensa por nombre sin distinguir mayusculas — O(n)
     // lambda 3: compara dos strings sin importar mayusculas/minusculas
     Recompensa<int>* buscarRecompensa(const string& nombreBuscado) {
@@ -148,7 +147,6 @@ public:
             }
             return true;
             };
-
         for (uint i = 0; i < recompensas.longitud(); i++) {
             Recompensa<int>* r = recompensas.obtenerPos(i);
             if (r != nullptr && coincide(r->getNombre(), nombreBuscado))
@@ -157,8 +155,7 @@ public:
         return nullptr;
     }
 
-    // calcula recursivamente los puntos necesarios para alcanzar un nivel
-    // caso base: nivel 1 requiere 0 puntos — O(nivelObjetivo)
+    // calcula recursivamente los puntos necesarios para alcanzar un nivel — O(nivelObjetivo)
     int puntosParaNivel(int nivelObjetivo) {
         if (nivelObjetivo <= 1) return 0;
         return (nivelObjetivo - 1) * 100 + puntosParaNivel(nivelObjetivo - 1);
@@ -194,16 +191,21 @@ public:
             << " | " << puntosTotales << " pts" << endl;
     }
 
-    // muestra los datos completos del usuario unificando perfil y recompensas
+    // muestra los datos completos del usuario
     void mostrar() {
-        cout << "  === PERFIL DE " << nombre << " " << apellido << " (" << suscripcion->getTipo() << ") ===" << endl;
-        cout << "  ID      : " << id << " | Correo: " << correo << " | Idioma: " << idiomaNativo << endl;
-        cout << "  Vidas   : " << perfil->getVidas() << " | Racha: " << perfil->getRacha() << " dias" << endl;
+        cout << "  === PERFIL DE " << nombre << " " << apellido
+            << " (" << suscripcion->getTipo() << ") ===" << endl;
+        cout << "  ID      : " << id
+            << " | Correo: " << correo
+            << " | Idioma: " << idiomaNativo << endl;
+        cout << "  Racha   : " << perfil->getRacha() << " dias" << endl;
         cout << "  Puntos  : " << puntosTotales << " | Nivel: " << nivel << endl;
+        cout << "  Lecciones completadas: " << leccionesCompletadas << endl;
 
         if (!notificaciones.esVacia()) {
             cout << "  Notificaciones recientes:" << endl;
-            for (uint i = 0; i < notificaciones.longitud(); i++) notificaciones.obtenerPos(i)->mostrar();
+            for (uint i = 0; i < notificaciones.longitud(); i++)
+                notificaciones.obtenerPos(i)->mostrar();
         }
 
         cout << "  Recompensas (" << recompensas.longitud() << "):" << endl;
@@ -214,30 +216,33 @@ public:
         cout << "  ======================================" << endl;
     }
 
-    // guarda el usuario en un archivo de texto
-    // formato: id|nombre|apellido|idiomaNativo|correo|nivel|puntos
-    void guardarEnArchivo(const string& ruta) {
-        ofstream archivo(ruta, ios::app);
-        if (archivo.is_open()) {
-            archivo << id << "|" << nombre << "|" << apellido << "|"
-                << idiomaNativo << "|" << correo << "|"
-                << nivel << "|" << puntosTotales << "|"
-                << suscripcion->getTipo() << "|" << perfil->getRacha()
-                << "|" << perfil->getVidas() << "|"
-                << leccionesCompletadas << "|";
+    // escribe una linea del usuario en un stream ya abierto
+    // usado por reescribirArchivoUsuarios para escribir todo en una sola apertura
+    void escribirEnStream(ofstream& archivo) {
+        archivo << id << "|" << nombre << "|" << apellido << "|"
+            << idiomaNativo << "|" << correo << "|"
+            << nivel << "|" << puntosTotales << "|"
+            << suscripcion->getTipo() << "|"
+            << perfil->getRacha() << "|"
+            << leccionesCompletadas << "|";
+        for (uint i = 0; i < recompensas.longitud(); i++) {
+            Recompensa<int>* r = recompensas.obtenerPos(i);
+            archivo << (r && r->estaObtenida() ? "1" : "0");
+        }
+        archivo << "\r\n";  // CRLF para compatibilidad Windows
+    }
 
-            // guardar cuantas recompensas estan obtenidas como bitmask
-            // ejemplo: 1010 significa recompensa 0 y 2 obtenidas
-            for (uint i = 0; i < recompensas.longitud(); i++) {
-                Recompensa<int>* r = recompensas.obtenerPos(i);
-                archivo << (r && r->estaObtenida() ? "1" : "0");
-            }
-            archivo << "\n";
+    // formato: id|nombre|apellido|idiomaNativo|correo|nivel|puntos|suscripcion|racha|leccionesCompletadas|bitmaskRecompensas
+    // usado solo al registrar un usuario nuevo (append de una sola linea)
+    void guardarEnArchivo(const string& ruta) {
+        ofstream archivo(ruta, ios::app | ios::binary);
+        if (archivo.is_open()) {
+            escribirEnStream(archivo);
             archivo.close();
         }
     }
 
-    // carga un usuario desde una linea del archivo de texto
+    // formato de carga: id|nombre|apellido|idiomaNativo|correo|nivel|puntos|suscripcion|racha|leccionesCompletadas|bitmask
     static Usuario<int>* cargarDesdeLinea(const string& linea) {
         vector<string> partes;
         string token;
@@ -249,27 +254,29 @@ public:
 
         if (partes.size() < 7) return nullptr;
 
+        // Validar que partes[0] sea un numero valido
+        for (char c : partes[0])
+            if (!isdigit(c)) return nullptr;
+
         Usuario<int>* u = new Usuario<int>(
             stoi(partes[0]), partes[1], partes[2], partes[3], partes[4]
         );
         u->setNivel(stoi(partes[5]));
         u->setPuntosTotales(stoi(partes[6]));
 
-        if (partes.size() >= 10) {
+        if (partes.size() >= 9) {
             if (partes[7] == "Premium") {
                 u->getSuscripcion()->setTipo("Premium");
                 u->getSuscripcion()->setMultiplicador(2.0);
             }
             u->getPerfil()->setRacha(stoi(partes[8]));
-            u->getPerfil()->setVidas(stoi(partes[9]));
+        }
+        if (partes.size() >= 10) {
+            int lc = stoi(partes[9]);
+            u->setLeccionesCompletadas(lc);     // setLeccionesCompletadas ya clampea a 0 si es negativo
         }
         if (partes.size() >= 11) {
-            u->setLeccionesCompletadas(stoi(partes[10]));
-        }
-
-        // guardar el estado de recompensas para aplicar despues de asignarRecompensasBase
-        if (partes.size() >= 12) {
-            u->setEstadoRecompensasPendiente(partes[11]);
+            u->setEstadoRecompensasPendiente(partes[10]);
         }
 
         return u;

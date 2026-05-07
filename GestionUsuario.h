@@ -47,7 +47,7 @@ void cargarUsuarios() {
         Usuario<int>* u = Usuario<int>::cargarDesdeLinea(linea);
         if (u != nullptr) {
             asignarRecompensasBase(u);
-            u->aplicarEstadoRecompensas(); 
+            u->aplicarEstadoRecompensas();
             listaUsuarios.agregaFinal(u);
             if (u->getId() >= contadorIdUsuario)
                 contadorIdUsuario = u->getId() + 1;
@@ -65,12 +65,14 @@ Usuario<int>* buscarUsuarioPorId(int id) {
 }
 
 void reescribirArchivoUsuarios() {
-    ofstream archivo("usuarios.txt", ios::trunc);
-    archivo.close();
+    // Una sola apertura para todo el archivo — evita que lineas queden pegadas
+    ofstream archivo("usuarios.txt", ios::trunc | ios::binary);
+    if (!archivo.is_open()) return;
     for (uint i = 0; i < listaUsuarios.longitud(); i++) {
         Usuario<int>* u = listaUsuarios.obtenerPos(i);
-        if (u) u->guardarEnArchivo("usuarios.txt");
+        if (u) u->escribirEnStream(archivo);
     }
+    archivo.close();
 }
 
 void registrarUsuario() {
@@ -88,12 +90,10 @@ void registrarUsuario() {
 
     int nuevoId;
     do {
-        nuevoId = 100 + rand() % 900; 
+        nuevoId = 100 + rand() % 900;
     } while (buscarUsuarioPorId(nuevoId) != nullptr);
 
-    Usuario<int>* nuevo = new Usuario<int>(
-        nuevoId, nombre, apellido, idioma, correo
-    );
+    Usuario<int>* nuevo = new Usuario<int>(nuevoId, nombre, apellido, idioma, correo);
 
     if (tipoSub == 2) {
         nuevo->getSuscripcion()->setTipo("Premium");
@@ -194,7 +194,6 @@ void modificarUsuario() {
     cout << "  4. Correo" << endl;
     cout << "  5. Cambiar Suscripcion (Premium/Gratis)" << endl;
     cout << "  6. Aumentar Racha de estudio (+1)" << endl;
-    cout << "  7. Restar vida por error (-1)" << endl;
     cout << "  0. Cancelar" << endl;
     cout << endl << "  Opcion: ";
 
@@ -235,10 +234,6 @@ void modificarUsuario() {
     case 6:
         u->getPerfil()->aumentarRacha();
         cout << "  Racha aumentada a " << u->getPerfil()->getRacha() << " dias." << endl;
-        break;
-    case 7:
-        u->getPerfil()->perderVida();
-        cout << "  Vidas restantes: " << u->getPerfil()->getVidas() << endl;
         break;
     case 0:
         return;
@@ -291,15 +286,15 @@ void menuUsuarios() {
         cout << endl << "  Opcion: "; cin >> opcion; cin.ignore();
 
         switch (opcion) {
-        case 1: registrarUsuario();        break;
-        case 2: listarUsuarios();          break;
-        case 3: agregarPuntosUsuario();    break;
-        case 4: eliminarUsuario();         break;
-        case 5: modificarUsuario();        break;
+        case 1: registrarUsuario();         break;
+        case 2: listarUsuarios();           break;
+        case 3: agregarPuntosUsuario();     break;
+        case 4: eliminarUsuario();          break;
+        case 5: modificarUsuario();         break;
         case 6: enviarNotificacionGlobal(); break;
         case 0: break;
         default:
-            cout << endl << "  opcion invalida." << endl;
+            cout << endl << "  Opcion invalida." << endl;
             pausar();
         }
     } while (opcion != 0);
