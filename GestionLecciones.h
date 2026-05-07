@@ -6,7 +6,10 @@
 #include "GestionUsuario.h"
 #include <cstdlib>
 #include <conio.h>
+#include "MapasEjercicio.h"
 
+using namespace System;
+using namespace std;
 
 
 class GestionLecciones {
@@ -43,6 +46,9 @@ public:
 
         cout << "  Bienvenido, " << usuarioActivo->getNombre() << "!" << endl;
 
+        _sleep(2000);
+        limpiarPantalla();
+
         // resetear todas las lecciones a bloqueado primero
         for (uint i = 0; i < misLecciones.longitud(); i++) {
             misLecciones.obtenerPos(i)->setDesbloqueada(false);
@@ -57,19 +63,38 @@ public:
             misLecciones.obtenerPos(i)->desbloquear();
         }
 
+        char tecla;
         int opcion;
+
         do {
-            cout << "\n=== MENU DE LECCIONES ===\n";
+            DibujarMapaM();
+            Console::ForegroundColor = ConsoleColor::White;
+            escribirEnMapaM("       === LECCIONES ===       ", 0, 1, 2);
+            
+            int x = 0;
+            int y = 3;
+
+            Console::ForegroundColor = ConsoleColor::Green;
+
             for (uint i = 0; i < misLecciones.longitud(); i++) {
                 Leccion* l = misLecciones.obtenerPos(i);
-                cout << i + 1 << ". " << l->getTema();
-                if (!l->estaDesbloqueada()) cout << " [BLOQUEADA]";
-                cout << endl;
+
+                string linea = to_string(i + 1) + ". " + l->getTema();
+                if (!l->estaDesbloqueada()) {
+                    linea += " [BLOQUEADA]";
+                }
+
+                escribirEnMapaM(linea, x, y + i + 1, 3);
             }
-            cout << "0. Salir\n";
-            cout << "Selecciona una leccion: ";
-            cin >> opcion;
-            cin.ignore();
+
+            Console::ForegroundColor = ConsoleColor::Red;
+            escribirEnMapaM("0. Salir\n", 0, 9, 4);
+
+            Console::ResetColor();
+
+            tecla = _getch();
+            opcion = tecla - '0';
+
             limpiarPantalla();
 
             if (opcion > 0 && opcion <= (int)misLecciones.longitud()) {
@@ -81,7 +106,7 @@ public:
                 }
                 else {
                     cout << "\n  Debes completar la leccion anterior primero!\n";
-                    pausar();
+                    _sleep(1000);
                 }
             }
 
@@ -92,12 +117,12 @@ public:
             misLecciones.obtenerPos(i)->setDesbloqueada(false);
         }
     }
-
+    
     void ejecutarLeccion(uint indice) {
         Leccion* l = misLecciones.obtenerPos(indice);
         if (!l->cargarArchivo()) return;
 
-        // seed = ID del usuario; intento = lecciones completadas (cambia cada vez que aprueba)
+       // seed = ID del usuario; intento = lecciones completadas (cambia cada vez que aprueba)
         int intentoLeccion = usuarioActivo->getLeccionesCompletadas();
         Ejercicio<Pregunta> sesion(l->getPreguntas(), usuarioActivo->getId(), intentoLeccion);
 
@@ -110,7 +135,7 @@ public:
         limpiarPantalla();
 
         while (!sesion.Terminado()) {
-            string opcionRespuesta;
+            char opcionRespuesta;
             Pregunta p = sesion.obtenerSiguientePregunta();
 
             cout << "  [Dificultad: " << p.getDificultad() << "] " << p.getEnunciado() << endl << endl;
@@ -120,13 +145,12 @@ public:
             }
 
             cout << "\n  Elige (A, B o C): ";
-            cin >> opcionRespuesta;
-            cin.ignore();
+            opcionRespuesta = _getch();
 
             string respuestaElegida = "";
-            if (opcionRespuesta == "A" || opcionRespuesta == "a") respuestaElegida = p.getOpciones()[0];
-            else if (opcionRespuesta == "B" || opcionRespuesta == "b") respuestaElegida = p.getOpciones()[1];
-            else if (opcionRespuesta == "C" || opcionRespuesta == "c") respuestaElegida = p.getOpciones()[2];
+            if (opcionRespuesta == 'A' || opcionRespuesta == 'a') respuestaElegida = p.getOpciones()[0];
+            else if (opcionRespuesta == 'B' || opcionRespuesta == 'b') respuestaElegida = p.getOpciones()[1];
+            else if (opcionRespuesta == 'C' || opcionRespuesta == 'c') respuestaElegida = p.getOpciones()[2];
 
             p.verificarRespuesta(respuestaElegida);
 
