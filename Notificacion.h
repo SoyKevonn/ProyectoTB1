@@ -19,6 +19,6 @@ public:
     void marcarComoLeida() { leida = true; }
 
     void mostrar() {
-        cout << "    [" << (leida ? "v" : "!") << "] " << mensaje << " (" << fechaEnvio << ")" << endl;
+        cout << "    [" << (leida ? "v" : "!") << "] " << mensaje << " (" << fechaEnvio << ")" << endl; // O(1) Constante
     }
 };

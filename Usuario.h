@@ -155,34 +155,49 @@ public:
         return nullptr;
     }
 
-    // calcula recursivamente los puntos necesarios para alcanzar un nivel — O(nivelObjetivo)
+    // calcula recursivamente los puntos necesarios para alcanzar un nivel 
     int puntosParaNivel(int nivelObjetivo) {
         if (nivelObjetivo <= 1) return 0;
         return (nivelObjetivo - 1) * 100 + puntosParaNivel(nivelObjetivo - 1);
     }
 
-    // ordena las recompensas por puntos requeridos usando insertion sort — O(n^2)
+    // ordena las recompensas por puntos requeridos
     void ordenarRecompensasPorPuntos() {
-        int n = (int)recompensas.longitud();
-        if (n <= 1) return;
+        int n = (int)recompensas.longitud(); // O(1)
+        if (n <= 1) return;                  // O(1)
 
-        vector<Recompensa<int>*> vec;
+        vector<Recompensa<int>*> vec;        // O(1)
+
+        // O(n^2) total (n iteraciones * O(n) del método obtenerPos)
         for (int i = 0; i < n; i++)
             vec.push_back(recompensas.obtenerPos(i));
 
+        // O(n^2) total (Peor caso del algoritmo Insertion Sort)
         for (int i = 1; i < n; i++) {
-            Recompensa<int>* key = vec[i];
-            int j = i - 1;
+            Recompensa<int>* key = vec[i];   // O(1)
+            int j = i - 1;                   // O(1)
+
             while (j >= 0 && vec[j]->getPuntosRequeridos() > key->getPuntosRequeridos()) {
-                vec[j + 1] = vec[j];
-                j--;
+                vec[j + 1] = vec[j];         // O(1)
+                j--;                         // O(1)
             }
-            vec[j + 1] = key;
+            vec[j + 1] = key;                // O(1)
         }
 
-        while (!recompensas.esVacia()) recompensas.eliminaInicial();
+        // O(n) total (n iteraciones * O(1) de eliminaInicial)
+        while (!recompensas.esVacia())
+            recompensas.eliminaInicial();
+
+        // O(n^2) total (n iteraciones * O(n) de agregaFinal)
         for (int i = 0; i < (int)vec.size(); i++)
             recompensas.agregaFinal(vec[i]);
+
+        /*
+          PROCESO BIG O:
+          T(n) = O(1) + O(1) + O(1) + O(n^2) + O(n^2) + O(n) + O(n^2)
+          T(n) = O(3) + O(n) + O(3n^2)
+          T(n) = O(n^2)
+        */
     }
 
     void resumen() {

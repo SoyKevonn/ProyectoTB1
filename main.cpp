@@ -21,7 +21,7 @@ int main() {
         dibujarFondoMenu();
 
         // Kevin
-        Console::SetCursorPosition(17, 13); cout << "  1. Usuarios y recompensas";
+        Console::SetCursorPosition(17, 13); cout << "  1. Usuarios";
         // Salvador
         Console::SetCursorPosition(17, 18); cout << "  2. Lecciones y ejercicios";
         // Alfredo

@@ -6,7 +6,7 @@
 #include "GestionUsuario.h"
 #include <cstdlib>
 #include <conio.h>
-#include "MapasEjercicio.h"
+
 
 using namespace System;
 using namespace std;
@@ -67,9 +67,9 @@ public:
         int opcion;
 
         do {
-            DibujarMapaM();
+            // Metodo a cambiar por otro nuevo DibujarMapaM();
             Console::ForegroundColor = ConsoleColor::White;
-            escribirEnMapaM("       === LECCIONES ===       ", 0, 1, 2);
+            // Metodo a cambiar por otro nuevo escribirEnMapaM("       === LECCIONES ===       ", 0, 1, 2);
             
             int x = 0;
             int y = 3;
@@ -84,11 +84,11 @@ public:
                     linea += " [BLOQUEADA]";
                 }
 
-                escribirEnMapaM(linea, x, y + i + 1, 3);
+                //escribirEnMapaM(linea, x, y + i + 1, 3);
             }
 
             Console::ForegroundColor = ConsoleColor::Red;
-            escribirEnMapaM("0. Salir\n", 0, 9, 4);
+            //escribirEnMapaM("0. Salir\n", 0, 9, 4);
 
             Console::ResetColor();
 

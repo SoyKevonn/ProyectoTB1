@@ -16,5 +16,5 @@ public:
     void setRacha(int r) { rachaDias = r; }
     void setBio(string b) { biografia = b; }
 
-    void aumentarRacha() { rachaDias++; }
+    void aumentarRacha() { rachaDias++; } // O(1) Constante
 };

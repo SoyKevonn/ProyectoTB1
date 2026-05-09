@@ -16,7 +16,7 @@ public:
 
     T getId() { return id; }
     string getTipo() { return tipo; }
-    double getMultiplicador() { return multiplicadorXP; }
+    double getMultiplicador() { return multiplicadorXP; }  // O(1) Constante
     bool estaActiva() { return activa; }
 
     void setTipo(string t) { tipo = t; }

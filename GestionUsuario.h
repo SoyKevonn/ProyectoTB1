@@ -7,6 +7,7 @@
 #include "Lista.h"
 #include "Usuario.h"
 #include "Recompensa.h"
+#include "Fondo.h"
 using namespace std;
 
 Lista<Usuario<int>*> listaUsuarios;
@@ -23,11 +24,6 @@ void limpiarPantalla() {
     system("cls");
 }
 
-void mostrarEncabezado() {
-    cout << "============================================" << endl;
-    cout << "     LINGUATRACK - Aprende un Idioma       " << endl;
-    cout << "============================================" << endl;
-}
 
 void asignarRecompensasBase(Usuario<int>* u) {
     u->agregarRecompensa(new Recompensa<int>(contadorIdRecompensa++, "Principiante", "Completa tu primer ejercicio", 50));
@@ -275,15 +271,16 @@ void menuUsuarios() {
     int opcion;
     do {
         limpiarPantalla();
-        cout << "  -- Gestion de usuarios --" << endl << endl;
-        cout << "  1. Registrar usuario" << endl;
-        cout << "  2. Listar usuarios" << endl;
-        cout << "  3. Agregar puntos" << endl;
-        cout << "  4. Eliminar usuario" << endl;
-        cout << "  5. Modificar usuario" << endl;
-        cout << "  6. Enviar Notificacion Global" << endl;
-        cout << "  0. Volver" << endl;
-        cout << endl << "  Opcion: "; cin >> opcion; cin.ignore();
+        dibujarUsuarioMenu();
+        //cout << "  -- Gestion de usuarios --" << endl << endl;
+        Console::SetCursorPosition(31, 9); cout << "1. Registrar usuario" << endl;
+        Console::SetCursorPosition(31, 10);cout << "2. Listar usuarios" << endl;
+        Console::SetCursorPosition(31, 11);cout << "3. Agregar puntos" << endl;
+        Console::SetCursorPosition(31, 12);cout << "4. Eliminar usuario" << endl;
+        Console::SetCursorPosition(31, 13);cout << "5. Modificar usuario" << endl;
+        Console::SetCursorPosition(31, 14);cout << "6. Enviar Notificacion Global" << endl;
+        Console::SetCursorPosition(31, 15);cout << "0. Volver" << endl;
+        Console::SetCursorPosition(31, 16); cout << "  Opcion: "; cin >> opcion; cin.ignore();
 
         switch (opcion) {
         case 1: registrarUsuario();         break;

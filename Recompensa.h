@@ -41,11 +41,19 @@ public:
     // intenta desbloquear la recompensa si el usuario tiene puntos suficientes
     // retorna true si se desbloqueó en esta llamada
     bool intentarDesbloquear(int puntosUsuario) {
+        // O(1) - Evaluación de condiciones lógicas simples (comparación de booleanos y enteros)
         if (!obtenida && puntosUsuario >= puntosRequeridos) {
-            obtenida = true;
-            return true;
+            obtenida = true; // O(1) - Asignación directa de un valor a una variable
+            return true;     // O(1) - Fin de la ejecución y retorno
         }
-        return false;
+        return false;        // O(1) - Fin de la ejecución y retorno
+
+        /*
+          PROCESO BIG O:
+          T(n) = O(1) + O(1) + O(1)
+          T(n) = O(3)
+          T(n) = O(1) Constante
+        */
     }
 
     // muestra la recompensa en consola con su estado
