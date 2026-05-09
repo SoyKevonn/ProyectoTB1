@@ -13,9 +13,6 @@
 
 using namespace std;
 
-// entidad que representa a un estudiante registrado en la plataforma
-// usa lista enlazada para manejar sus recompensas
-// integrante: kevin
 template <typename T>
 class Usuario
 {
@@ -27,7 +24,7 @@ private:
     string correo;
     int nivel;
     int puntosTotales;
-    int leccionesCompletadas;           // inicializado en 0 en ambos constructores
+    int leccionesCompletadas;           
     string estadoRecompensasPendiente;
     Lista<Recompensa<int>*> recompensas;
     Perfil* perfil;
@@ -57,7 +54,7 @@ public:
         for (uint i = 0; i < notificaciones.longitud(); i++) delete notificaciones.obtenerPos(i);
     }
 
-    // getters
+    //getters
     T      getId() { return id; }
     string getNombre() { return nombre; }
     string getApellido() { return apellido; }
@@ -67,7 +64,7 @@ public:
     int    getPuntos() { return puntosTotales; }
     int    getLeccionesCompletadas() { return leccionesCompletadas; }
 
-    // setters
+    //setters
     void setNombre(string n) { nombre = n; }
     void setApellido(string a) { apellido = a; }
     void setIdiomaNativo(string i) { idiomaNativo = i; }
@@ -124,7 +121,7 @@ public:
         verificarRecompensas();
     }
 
-    // revisa cada recompensa y la desbloquea si el usuario tiene puntos — O(n)
+    // revisa cada recompensa y la desbloquea si el usuario tiene puntos
     // lambda 2: notifica en consola cuando se desbloquea una recompensa
     void verificarRecompensas() {
         auto notificarDesbloqueo = [](const string& nombreR) {
@@ -137,7 +134,7 @@ public:
         }
     }
 
-    // busca una recompensa por nombre sin distinguir mayusculas — O(n)
+    // busca una recompensa por nombre sin distinguir mayusculas
     // lambda 3: compara dos strings sin importar mayusculas/minusculas
     Recompensa<int>* buscarRecompensa(const string& nombreBuscado) {
         auto coincide = [](const string& a, const string& b) -> bool {
@@ -207,7 +204,6 @@ public:
             << " | " << puntosTotales << " pts" << endl;
     }
 
-    // muestra los datos completos del usuario
     void mostrar() {
         cout << "  === PERFIL DE " << nombre << " " << apellido
             << " (" << suscripcion->getTipo() << ") ===" << endl;
@@ -249,7 +245,7 @@ public:
     }
 
     // formato: id|nombre|apellido|idiomaNativo|correo|nivel|puntos|suscripcion|racha|leccionesCompletadas|bitmaskRecompensas
-    // usado solo al registrar un usuario nuevo (append de una sola linea)
+    // usado solo al registrar un usuario nuevo
     void guardarEnArchivo(const string& ruta) {
         ofstream archivo(ruta, ios::app | ios::binary);
         if (archivo.is_open()) {
@@ -289,7 +285,7 @@ public:
         }
         if (partes.size() >= 10) {
             int lc = stoi(partes[9]);
-            u->setLeccionesCompletadas(lc);     // setLeccionesCompletadas ya clampea a 0 si es negativo
+            u->setLeccionesCompletadas(lc);   
         }
         if (partes.size() >= 11) {
             u->setEstadoRecompensasPendiente(partes[10]);

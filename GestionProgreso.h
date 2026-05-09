@@ -7,27 +7,21 @@
 #include <vector>
 #include <conio.h>
 
-#include "GestionUsuario.h"     // listaUsuarios, buscarUsuarioPorId
-#include "GestionLecciones.h"   // GestionLecciones*
+#include "GestionUsuario.h"     
+#include "GestionLecciones.h"   
 #include "NivelInfo.h"
 #include "EstadisticaUsuario.h"
+#include "Fondo.h"
 
 using namespace std;
 
-// =========================================================
-// METODO RECURSIVO (de Alfredo, conservado)
-// Calcula cuantas sesiones faltan para llegar a una meta
-// dado un promedio de puntos por sesion
-// =========================================================
+// calcular cuantas sesiones faltan para llegar a la meta establecida (Metodo recursivo)
 int sesionesParaObjetivo(int puntosFaltantes, int promedioPorSesion) {
     if (puntosFaltantes <= 0) return 0;
     return 1 + sesionesParaObjetivo(puntosFaltantes - promedioPorSesion, promedioPorSesion);
 }
 
-// =========================================================
-// ALGORITMO DE ORDENAMIENTO (de Alfredo, conservado)
-// Insertion sort descendente para ranking de puntajes
-// =========================================================
+//ranking Insertion sort
 void rankingGeneral(int arr[], int n) {
     for (int i = 1; i < n; i++) {
         int clave = arr[i];
@@ -40,10 +34,6 @@ void rankingGeneral(int arr[], int n) {
     }
 }
 
-// =========================================================
-// MENU PRINCIPAL DE PROGRESO
-// Recibe puntero al GestionLecciones ya instanciado en main
-// =========================================================
 void menuProgreso(GestionLecciones* gL) {
 
     // --- Pedir ID y buscar usuario ---
@@ -61,13 +51,12 @@ void menuProgreso(GestionLecciones* gL) {
         return;
     }
 
-    // Helpers que usan datos reales del usuario
+    //datos reales del usuario
     NivelInfo<int>        nivelInfo;
     EstadisticaUsuario<int> stats;
 
-    // --- LAMBDAS ---
 
-    // Barra de progreso basada en puntos reales del usuario
+    //barra de progreso
     auto generarBarra = [](int p) {
         int tope = 1000;
         int barras = (p >= tope) ? 10 : (p * 10 / tope);
@@ -77,7 +66,7 @@ void menuProgreso(GestionLecciones* gL) {
         cout << "] " << p << " / " << tope << " pts" << endl;
         };
 
-    // Calcula puntos faltantes para una meta
+    //calcular puntos faltantes para llegar a la meta establecida
     auto puntosFaltantes = [](int meta, int actual) -> int {
         return (meta > actual) ? meta - actual : 0;
         };
@@ -85,24 +74,22 @@ void menuProgreso(GestionLecciones* gL) {
     int opcion;
     do {
         limpiarPantalla();
-        cout << "========================================" << endl;
-        cout << "          MODULO DE PROGRESO            " << endl;
-        cout << "  Usuario: " << u->getNombre() << " " << u->getApellido()
+        dibujarFondoProgreso();
+
+        Console::SetCursorPosition(31,11); cout << "  Usuario: " << u->getNombre() << " " << u->getApellido()
             << " [" << u->getSuscripcion()->getTipo() << "]" << endl;
-        cout << "========================================" << endl;
-        cout << "  1. Ver mi progreso" << endl;
-        cout << "  2. Ver lecciones" << endl;
-        cout << "  3. Estadisticas" << endl;
-        cout << "  4. Ranking de estudiantes" << endl;
-        cout << "  5. Proyectar meta" << endl;
-        cout << "  0. Volver al menu principal" << endl;
-        cout << "\n  Opcion: ";
+        
+        Console::SetCursorPosition(31,13); cout << "1. Ver mi progreso" << endl;
+        Console::SetCursorPosition(31,14); cout << "2. Ver lecciones" << endl;
+        Console::SetCursorPosition(31,15); cout << "3. Estadisticas" << endl;
+        Console::SetCursorPosition(31,16); cout << "4. Ranking de estudiantes" << endl;
+        Console::SetCursorPosition(31,17); cout << "5. Proyectar meta" << endl;
+        Console::SetCursorPosition(31,18); cout << "0. Volver al menu principal" << endl;
+        Console::SetCursorPosition(31,19); cout << "Opcion: ";
         cin >> opcion; cin.ignore();
 
-        // --------------------------------------------------
         switch (opcion) {
 
-            // ---- 1. PROGRESO GENERAL ----
         case 1: {
             limpiarPantalla();
             cout << "\n  === PROGRESO DE " << u->getNombre() << " ===" << endl << endl;
@@ -123,13 +110,10 @@ void menuProgreso(GestionLecciones* gL) {
             break;
         }
 
-              // ---- 2. ESTADO DE LECCIONES ----
         case 2: {
             limpiarPantalla();
             cout << "\n  === LECCIONES ===" << endl << endl;
 
-            // Reconstruir estado de desbloqueo igual que GestionLecciones::mostrarMenu
-            // sin modificar el estado real — solo lectura
             int completadas = u->getLeccionesCompletadas();
 
             for (uint i = 0; i < gL->cantidadLecciones(); i++) {
@@ -149,7 +133,6 @@ void menuProgreso(GestionLecciones* gL) {
             break;
         }
 
-              // ---- 3. ESTADISTICAS ----
         case 3: {
             limpiarPantalla();
             cout << "\n  === ESTADISTICAS ===" << endl << endl;
@@ -180,7 +163,6 @@ void menuProgreso(GestionLecciones* gL) {
             break;
         }
 
-              // ---- 4. RANKING DE ESTUDIANTES ----
         case 4: {
             limpiarPantalla();
             cout << "\n  === RANKING DE ESTUDIANTES ===" << endl << endl;
@@ -200,7 +182,7 @@ void menuProgreso(GestionLecciones* gL) {
                     usr->getNombre() + " " + usr->getApellido() });
             }
 
-            // Insertion sort descendente (algoritmo de Alfredo adaptado a vector de pares)
+            // Insertion sort descendente (ayuda de ia)
             for (int i = 1; i < (int)tabla.size(); i++) {
                 auto clave = tabla[i];
                 int j = i - 1;
@@ -224,7 +206,6 @@ void menuProgreso(GestionLecciones* gL) {
             break;
         }
 
-              // ---- 5. PROYECTAR META ----
         case 5: {
             limpiarPantalla();
             cout << "\n  === PROYECTAR META ===" << endl << endl;

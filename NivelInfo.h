@@ -3,10 +3,12 @@
 #define NIVELINFO_H
 #include <string>
 
+using namespace std;
+
 template <class T>
 class NivelInfo {
 public:
-    std::string obtenerRango(T puntos) {
+    string obtenerRango(T puntos) {
         if (puntos < 100) return "Novato";
         if (puntos < 500) return "Aprendiz";
         if (puntos < 1000) return "Intermedio";

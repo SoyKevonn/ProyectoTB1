@@ -61,7 +61,6 @@ Usuario<int>* buscarUsuarioPorId(int id) {
 }
 
 void reescribirArchivoUsuarios() {
-    // Una sola apertura para todo el archivo — evita que lineas queden pegadas
     ofstream archivo("usuarios.txt", ios::trunc | ios::binary);
     if (!archivo.is_open()) return;
     for (uint i = 0; i < listaUsuarios.longitud(); i++) {
@@ -272,7 +271,6 @@ void menuUsuarios() {
     do {
         limpiarPantalla();
         dibujarUsuarioMenu();
-        //cout << "  -- Gestion de usuarios --" << endl << endl;
         Console::SetCursorPosition(31, 9); cout << "1. Registrar usuario" << endl;
         Console::SetCursorPosition(31, 10);cout << "2. Listar usuarios" << endl;
         Console::SetCursorPosition(31, 11);cout << "3. Agregar puntos" << endl;
