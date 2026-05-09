@@ -1,4 +1,4 @@
-Comida y Bebidas
+Comidas
 Como se dice 'Agua'?|Water|Milk|Juice|Water|1
 Que significa 'Apple'?|Pera|Uva|Manzana|Manzana|1
 Como se dice 'Leche'?|Water|Milk|Cheese|Milk|1

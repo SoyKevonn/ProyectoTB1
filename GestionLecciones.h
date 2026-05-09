@@ -1,4 +1,5 @@
 #pragma once
+#include "Fondo.h"
 #include "Lista.h"
 #include "Leccion.h"
 #include "Ejercicio.h"
@@ -8,8 +9,8 @@
 #include <conio.h>
 
 
-using namespace System;
 using namespace std;
+using namespace System;
 
 
 class GestionLecciones {
@@ -28,7 +29,9 @@ public:
     // funciones que podrian ayudar a alfredo
     Leccion* getLeccion(uint indice) {
         return misLecciones.obtenerPos(indice);
+
     }
+
 
     uint cantidadLecciones() {
         return misLecciones.longitud();
@@ -67,12 +70,10 @@ public:
         int opcion;
 
         do {
-            // Metodo a cambiar por otro nuevo DibujarMapaM();
-            Console::ForegroundColor = ConsoleColor::White;
-            // Metodo a cambiar por otro nuevo escribirEnMapaM("       === LECCIONES ===       ", 0, 1, 2);
-            
-            int x = 0;
-            int y = 3;
+			dibujarFondoLeccionMenu();
+
+            int x = 25;
+            int y = 13;
 
             Console::ForegroundColor = ConsoleColor::Green;
 
@@ -84,11 +85,10 @@ public:
                     linea += " [BLOQUEADA]";
                 }
 
-                //escribirEnMapaM(linea, x, y + i + 1, 3);
+                escribirFondoLeccionMenu(linea, x, y + i + 1, 5);
             }
 
-            Console::ForegroundColor = ConsoleColor::Red;
-            //escribirEnMapaM("0. Salir\n", 0, 9, 4);
+            escribirFondoLeccionMenu("0. Salir\n", 25, 20, 2);
 
             Console::ResetColor();
 
@@ -119,6 +119,13 @@ public:
     }
     
     void ejecutarLeccion(uint indice) {
+
+        //Lambda para calcular el promedio de aciertos
+        auto calcularPromedio = [](int aciertos, int total){
+			if (total == 0) return 0.0;
+			return (double)aciertos / total * 100.0;
+            };
+
         Leccion* l = misLecciones.obtenerPos(indice);
         if (!l->cargarArchivo()) return;
 
@@ -127,41 +134,62 @@ public:
         Ejercicio<Pregunta> sesion(l->getPreguntas(), usuarioActivo->getId(), intentoLeccion);
 
         limpiarPantalla();
-        cout << "\n  Iniciando: " << l->getTema() << endl;
-        cout << "  Total de preguntas: " << sesion.totalPreguntas << endl;
-        cout << "  Necesitas responder mas de la mitad para desbloquear la siguiente leccion." << endl;
-        cout << endl;
+		dibujarFondoLeccionPregunta(9);
+        escribirFondoLeccionMenu("\n Iniciando: " + l->getTema(), 23, 16, 5);
+        escribirFondoLeccionMenu("  Total de preguntas: " + to_string(sesion.totalPreguntas), 23, 17, 5);
+        escribirFondoLeccionMenu("  Necesitas responder mas de la mitad para desbloquear la siguiente", 23, 18, 5);
+		escribirFondoLeccionMenu("  leccion.", 23, 19, 5);
+        escribirFondoLeccionMenu("", 23, 19, 5);
+
         getch();
         limpiarPantalla();
 
         while (!sesion.Terminado()) {
+
             char opcionRespuesta;
             Pregunta p = sesion.obtenerSiguientePregunta();
+            int x2 = 25; int y2 = 18;
 
-            cout << "  [Dificultad: " << p.getDificultad() << "] " << p.getEnunciado() << endl << endl;
+			dibujarFondoLeccionPregunta(9);
+
+            string cabecera = "[Dificultad: " + to_string(p.getDificultad()) + "] " + p.getEnunciado();
+            escribirFondoLeccionMenu(cabecera, 25, 16, 5);
+
 
             for (int i = 0; i < (int)p.getOpciones().size(); i++) {
-                cout << "    " << char('A' + i) << ". " << p.getOpciones()[i] << endl;
-            }
 
-            cout << "\n  Elige (A, B o C): ";
-            opcionRespuesta = _getch();
+                string letra(1, char('A' + i));
+                string opcion = letra + ". " + p.getOpciones()[i];
+
+                escribirFondoLeccionMenu(opcion, x2 + 4, y2 + 1 + i, 5);
+            }
+            
+
+            do {
+                opcionRespuesta = toupper(_getch()); // Convertimos a mayúscula de una vez
+            } while (opcionRespuesta != 'A' && opcionRespuesta != 'B' && opcionRespuesta != 'C');
+
 
             string respuestaElegida = "";
             if (opcionRespuesta == 'A' || opcionRespuesta == 'a') respuestaElegida = p.getOpciones()[0];
             else if (opcionRespuesta == 'B' || opcionRespuesta == 'b') respuestaElegida = p.getOpciones()[1];
             else if (opcionRespuesta == 'C' || opcionRespuesta == 'c') respuestaElegida = p.getOpciones()[2];
 
+
             p.verificarRespuesta(respuestaElegida);
 
             if (p.getEsCorrecta()) {
+                dibujarFondoLeccionPregunta(1);
                 sesion.registarRespuesta(true);
-                cout << "\n  Correcto!" << endl;
+				escribirFondoLeccionMenu("  Correcto!", 25, 20, 5);
             }
             else {
+                dibujarFondoLeccionPregunta(0);
                 sesion.registarRespuesta(false);
                 sesion.reinsertarPregunta(p);
-                cout << "\n  Incorrecto. La respuesta correcta era: " << p.getRespuestaCorrecta() << endl;
+
+				string incorrecto = "  Incorrecto. La respuesta correcta era: " + p.getRespuestaCorrecta();
+                escribirFondoLeccionMenu(incorrecto, 25, 20, 2);
             }
 
             getch();
@@ -170,11 +198,19 @@ public:
 
         // mostrar resultado final
         limpiarPantalla();
-        cout << "\n  === RESULTADO ===" << endl;
-        cout << "  Leccion  : " << l->getTema() << endl;
-        cout << "  Aciertos : " << sesion.acertadas << " de " << sesion.totalPreguntas << endl;
+        dibujarFondoLeccionPregunta(3);
+		escribirFondoLeccionMenu("\n == = RESULTADO == = ", 25, 16, 5);
+
+		string leccionTema = "  Leccion  :" + l->getTema();
+        escribirFondoLeccionMenu(leccionTema, 25, 18, 5);
+
+        string aciertos = "  Aciertos : " + to_string(sesion.acertadas) + " de " + to_string(sesion.totalPreguntas);
+        escribirFondoLeccionMenu(aciertos, 25, 19, 5);
 
         bool aprobo = sesion.acertadas >= (sesion.totalPreguntas / 2);
+
+		string porcetajeprom = "  Promedio  : " + to_string(calcularPromedio(sesion.acertadas, sesion.totalPreguntas)) + "%";
+        escribirFondoLeccionMenu(porcetajeprom, 25, 20, 5);
 
         if (aprobo) {
             // actualizar lecciones completadas solo si es nueva para el usuario
@@ -188,7 +224,7 @@ public:
                 Leccion* proxima = misLecciones.obtenerPos(indice + 1);
                 if (!proxima->estaDesbloqueada()) {
                     proxima->desbloquear();
-                    cout << "  Has desbloqueado: " << proxima->getTema() << "!" << endl;
+                    escribirFondoLeccionMenu("  Has desbloqueado: " + proxima->getTema() + "!", 25, 22, 5);
                 }
             }
 
@@ -196,7 +232,7 @@ public:
             int puntos = sesion.acertadas * 20;
             if (puntos > 0) {
                 usuarioActivo->agregarPuntos(puntos);
-                cout << "  +" << puntos << " puntos agregados a tu cuenta!" << endl;
+                escribirFondoLeccionMenu("  +" + to_string(puntos) + " puntos agregados a tu cuenta!", 25, 23, 5);
                 usuarioActivo->enviarNotificacion(
                     "Completaste: " + l->getTema() + " con " + to_string(sesion.acertadas) + " aciertos",
                     "Hoy"
@@ -206,8 +242,8 @@ public:
             l->guardarResultados(sesion.acertadas, sesion.totalPreguntas);
         }
         else {
-            cout << "  No alcanzaste el minimo para desbloquear la siguiente leccion." << endl;
-            cout << "  Intentalo de nuevo." << endl;
+			escribirFondoLeccionMenu("  No alcanzaste el minimo para aprobar esta leccion.", 25, 21, 2);
+			escribirFondoLeccionMenu("  Revisa tus respuestas y vuelve a intentarlo.", 25, 22, 2);
         }
 
         // persistir cambios del usuario en archivo

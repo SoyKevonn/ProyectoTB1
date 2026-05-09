@@ -1,4 +1,4 @@
-Verbos Basicos
+Verbos
 Como se dice 'Correr' en ingles?|Run|Walk|Jump|Run|1
 Que significa la palabra 'Sleep'?|Comer|Dormir|Hablar|Dormir|1
 Como se dice 'Hablar' en ingles?|Speak|Listen|Hear|Speak|1

@@ -1,4 +1,4 @@
-Los Colores
+Colores
 Como se dice 'Rojo'?|Red|Blue|Green|Red|1
 Que color es 'Yellow'?|Verde|Amarillo|Naranja|Amarillo|1
 Como se dice 'Azul'?|Blue|Red|Yellow|Blue|1
@@ -18,4 +18,4 @@ Como se dice 'Carmesi'?|Crimson|Scarlet|Burgundy|Crimson|3
 Como se dice 'Cian'?|Cyan|Teal|Navy|Cyan|3
 Que color es 'Magenta'?|Cian|Magenta|Amarillo|Magenta|3
 Como se dice 'Granate' (Rojo oscuro)?|Maroon|Crimson|Scarlet|Maroon|3
-Cual es el color 'Añil'?|Cyan|Indigo|Violet|Indigo|3
+Cual es el color 'Anil'?|Cyan|Indigo|Violet|Indigo|3

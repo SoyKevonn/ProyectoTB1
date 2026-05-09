@@ -1,4 +1,4 @@
-Animales Salvajes y Domesticos
+Animales
 Como se dice 'Perro'?|Cat|Dog|Bird|Dog|1
 Que significa 'Bird'?|Gato|Pez|Pajaro|Pajaro|1
 Como se dice 'Gato'?|Dog|Cat|Mouse|Cat|1

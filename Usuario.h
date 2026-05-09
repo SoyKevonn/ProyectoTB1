@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include "Fondo.h"
 #include "Lista.h"
 #include "Recompensa.h"
 #include "Suscripcion.h"
@@ -127,7 +128,7 @@ public:
     // lambda 2: notifica en consola cuando se desbloquea una recompensa
     void verificarRecompensas() {
         auto notificarDesbloqueo = [](const string& nombreR) {
-            cout << "  *** Recompensa desbloqueada: " << nombreR << " ***" << endl;
+            escribirFondoLeccionMenu("*** Recompensa desbloqueada: " + nombreR + " ***", 25, 21, 7);
             };
         for (uint i = 0; i < recompensas.longitud(); i++) {
             Recompensa<int>* r = recompensas.obtenerPos(i);
