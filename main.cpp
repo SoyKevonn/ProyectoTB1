@@ -32,7 +32,7 @@ int main() {
         if (tecla >= '0' && tecla <= '3')
             opcion = tecla - '0';
         else
-            opcion = -1;  
+            opcion = -1;
 
         switch (opcion) {
         case 1:
@@ -54,9 +54,11 @@ int main() {
 
     } while (opcion != 0);
 
-    //liberar memoria de usuarios
-    for (uint i = 0; i < listaUsuarios.longitud(); i++)
-        delete listaUsuarios.obtenerPos(i);
+    // liberar memoria de usuarios usando tu Tabla Hash
+    vector<Usuario<int>*> todosLosUsuarios = tablaUsuarios.obtenerValores();
+    for (size_t i = 0; i < todosLosUsuarios.size(); i++) {
+        delete todosLosUsuarios[i];
+    }
 
     delete gL;
     return 0;

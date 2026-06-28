@@ -167,7 +167,10 @@ void menuProgreso(GestionLecciones* gL) {
             limpiarPantalla();
             cout << "\n  === RANKING DE ESTUDIANTES ===" << endl << endl;
 
-            int n = (int)listaUsuarios.longitud();
+            // ADAPTACIÓN TB2: Obtenemos los usuarios desde la nueva Tabla Hash
+            vector<Usuario<int>*> todos = tablaUsuarios.obtenerValores();
+            int n = (int)todos.size();
+
             if (n == 0) {
                 cout << "  No hay usuarios registrados." << endl;
                 pausar();
@@ -176,13 +179,13 @@ void menuProgreso(GestionLecciones* gL) {
 
             // Extraer puntajes y nombres para ordenar
             vector<pair<int, string>> tabla;
-            for (uint i = 0; i < listaUsuarios.longitud(); i++) {
-                Usuario<int>* usr = listaUsuarios.obtenerPos(i);
+            for (int i = 0; i < n; i++) {
+                Usuario<int>* usr = todos[i];
                 if (usr) tabla.push_back({ usr->getPuntos(),
                     usr->getNombre() + " " + usr->getApellido() });
             }
 
-            // Insertion sort descendente (ayuda de ia)
+            // Insertion sort descendente 
             for (int i = 1; i < (int)tabla.size(); i++) {
                 auto clave = tabla[i];
                 int j = i - 1;
@@ -205,7 +208,6 @@ void menuProgreso(GestionLecciones* gL) {
             pausar();
             break;
         }
-
         case 5: {
             limpiarPantalla();
             cout << "\n  === PROYECTAR META ===" << endl << endl;

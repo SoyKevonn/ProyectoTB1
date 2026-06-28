@@ -4,13 +4,13 @@
 #include <string>
 #include <limits>
 #include <vector>
-#include "Lista.h"
+#include "HashTabla.h" 
 #include "Usuario.h"
 #include "Recompensa.h"
 #include "Fondo.h"
 using namespace std;
 
-Lista<Usuario<int>*> listaUsuarios;
+HashTable<int, Usuario<int>*> tablaUsuarios(128);
 int contadorIdUsuario = 1;
 int contadorIdRecompensa = 1;
 
@@ -23,7 +23,6 @@ void pausar() {
 void limpiarPantalla() {
     system("cls");
 }
-
 
 void asignarRecompensasBase(Usuario<int>* u) {
     u->agregarRecompensa(new Recompensa<int>(contadorIdRecompensa++, "Principiante", "Completa tu primer ejercicio", 50));
@@ -44,7 +43,10 @@ void cargarUsuarios() {
         if (u != nullptr) {
             asignarRecompensasBase(u);
             u->aplicarEstadoRecompensas();
-            listaUsuarios.agregaFinal(u);
+
+            // Inserción en tu tabla hash
+            tablaUsuarios.insertar(u->getId(), u);
+
             if (u->getId() >= contadorIdUsuario)
                 contadorIdUsuario = u->getId() + 1;
         }
@@ -52,20 +54,21 @@ void cargarUsuarios() {
     archivo.close();
 }
 
+// Búsqueda directa O(1) usando tu lógica lineal
 Usuario<int>* buscarUsuarioPorId(int id) {
-    for (uint i = 0; i < listaUsuarios.longitud(); i++) {
-        Usuario<int>* u = listaUsuarios.obtenerPos(i);
-        if (u && u->getId() == id) return u;
-    }
-    return nullptr;
+    return tablaUsuarios.buscar(id);
 }
 
 void reescribirArchivoUsuarios() {
     ofstream archivo("usuarios.txt", ios::trunc | ios::binary);
     if (!archivo.is_open()) return;
-    for (uint i = 0; i < listaUsuarios.longitud(); i++) {
-        Usuario<int>* u = listaUsuarios.obtenerPos(i);
-        if (u) u->escribirEnStream(archivo);
+
+    // Obtenemos todos los usuarios del Hash para guardarlos
+    vector<Usuario<int>*> todos = tablaUsuarios.obtenerValores();
+    for (size_t i = 0; i < todos.size(); i++) {
+        if (todos[i] != nullptr) {
+            todos[i]->escribirEnStream(archivo);
+        }
     }
     archivo.close();
 }
@@ -97,7 +100,9 @@ void registrarUsuario() {
     }
 
     asignarRecompensasBase(nuevo);
-    listaUsuarios.agregaFinal(nuevo);
+
+    // Guardado en la tabla hash y texto
+    tablaUsuarios.insertar(nuevo->getId(), nuevo);
     nuevo->guardarEnArchivo("usuarios.txt");
 
     cout << endl << "  Usuario registrado correctamente." << endl;
@@ -109,13 +114,13 @@ void listarUsuarios() {
     limpiarPantalla();
     cout << "  -- Lista de usuarios --" << endl << endl;
 
-    if (listaUsuarios.esVacia()) {
+    vector<Usuario<int>*> todos = tablaUsuarios.obtenerValores();
+    if (todos.empty()) {
         cout << "  No hay usuarios registrados." << endl;
     }
     else {
-        for (uint i = 0; i < listaUsuarios.longitud(); i++) {
-            Usuario<int>* u = listaUsuarios.obtenerPos(i);
-            if (u) u->mostrar();
+        for (size_t i = 0; i < todos.size(); i++) {
+            if (todos[i]) todos[i]->mostrar();
         }
     }
     pausar();
@@ -150,18 +155,16 @@ void eliminarUsuario() {
     int id;
     cout << "  ID del usuario: "; cin >> id; cin.ignore();
 
-    for (uint i = 0; i < listaUsuarios.longitud(); i++) {
-        Usuario<int>* u = listaUsuarios.obtenerPos(i);
-        if (u && u->getId() == id) {
-            listaUsuarios.eliminaPos(i);
-            delete u;
-            reescribirArchivoUsuarios();
-            cout << endl << "  Usuario eliminado correctamente." << endl;
-            pausar();
-            return;
-        }
+    Usuario<int>* u = buscarUsuarioPorId(id);
+    if (u != nullptr) {
+        tablaUsuarios.eliminar(id);
+        delete u;
+        reescribirArchivoUsuarios();
+        cout << endl << "  Usuario eliminado correctamente." << endl;
     }
-    cout << endl << "  Usuario no encontrado." << endl;
+    else {
+        cout << endl << "  Usuario no encontrado." << endl;
+    }
     pausar();
 }
 
@@ -248,7 +251,8 @@ void enviarNotificacionGlobal() {
     limpiarPantalla();
     cout << "  -- Enviar Notificacion Global --" << endl << endl;
 
-    if (listaUsuarios.esVacia()) {
+    vector<Usuario<int>*> todos = tablaUsuarios.obtenerValores();
+    if (todos.empty()) {
         cout << "  No hay usuarios registrados." << endl;
         pausar();
         return;
@@ -257,9 +261,8 @@ void enviarNotificacionGlobal() {
     string mensaje;
     cout << "  Escriba el mensaje para todos: "; getline(cin, mensaje);
 
-    for (uint i = 0; i < listaUsuarios.longitud(); i++) {
-        Usuario<int>* u = listaUsuarios.obtenerPos(i);
-        if (u) u->enviarNotificacion(mensaje, "Global");
+    for (size_t i = 0; i < todos.size(); i++) {
+        if (todos[i]) todos[i]->enviarNotificacion(mensaje, "Global");
     }
 
     cout << endl << "  Notificacion enviada a todos los usuarios." << endl;
@@ -272,12 +275,12 @@ void menuUsuarios() {
         limpiarPantalla();
         dibujarUsuarioMenu();
         Console::SetCursorPosition(31, 9); cout << "1. Registrar usuario" << endl;
-        Console::SetCursorPosition(31, 10);cout << "2. Listar usuarios" << endl;
-        Console::SetCursorPosition(31, 11);cout << "3. Agregar puntos" << endl;
-        Console::SetCursorPosition(31, 12);cout << "4. Eliminar usuario" << endl;
-        Console::SetCursorPosition(31, 13);cout << "5. Modificar usuario" << endl;
-        Console::SetCursorPosition(31, 14);cout << "6. Enviar Notificacion Global" << endl;
-        Console::SetCursorPosition(31, 15);cout << "0. Volver" << endl;
+        Console::SetCursorPosition(31, 10); cout << "2. Listar usuarios" << endl;
+        Console::SetCursorPosition(31, 11); cout << "3. Agregar puntos" << endl;
+        Console::SetCursorPosition(31, 12); cout << "4. Eliminar usuario" << endl;
+        Console::SetCursorPosition(31, 13); cout << "5. Modificar usuario" << endl;
+        Console::SetCursorPosition(31, 14); cout << "6. Enviar Notificacion Global" << endl;
+        Console::SetCursorPosition(31, 15); cout << "0. Volver" << endl;
         Console::SetCursorPosition(31, 16); cout << "  Opcion: "; cin >> opcion; cin.ignore();
 
         switch (opcion) {

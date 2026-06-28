@@ -82,7 +82,7 @@ public:
     void enviarNotificacion(string m, string f) {
         notificaciones.agregaFinal(new Notificacion(m, f));
     }
-
+    //Leer bitmask guardado en archivo y recupera info de recompensas
     void aplicarEstadoRecompensas() {
         if (estadoRecompensasPendiente.empty()) return;
         for (uint i = 0; i < recompensas.longitud() && i < estadoRecompensasPendiente.size(); i++) {
@@ -106,7 +106,7 @@ public:
         int puntosFinales = puntos * suscripcion->getMultiplicador();
         puntosTotales += puntosFinales;
 
-        auto calcularNivel = [](int pts) -> int {
+        auto calcularNivel = [](int pts) {
             if (pts < 100) return 1;
             if (pts < 300) return 2;
             if (pts < 600) return 3;
@@ -127,6 +127,7 @@ public:
         auto notificarDesbloqueo = [](const string& nombreR) {
             escribirFondoLeccionMenu("*** Recompensa desbloqueada: " + nombreR + " ***", 25, 21, 7);
             };
+
         for (uint i = 0; i < recompensas.longitud(); i++) {
             Recompensa<int>* r = recompensas.obtenerPos(i);
             if (r != nullptr && r->intentarDesbloquear(puntosTotales))
@@ -135,9 +136,9 @@ public:
     }
 
     // busca una recompensa por nombre sin distinguir mayusculas
-    // lambda 3: compara dos strings sin importar mayusculas/minusculas
+    // lambda 3: compara dos strings sin importar mayusculas/minusculas (Ayuda de para la IA para comparación de mayusculas y minusculas)
     Recompensa<int>* buscarRecompensa(const string& nombreBuscado) {
-        auto coincide = [](const string& a, const string& b) -> bool {
+        auto coincide = [](const string& a, const string& b) {
             if (a.size() != b.size()) return false;
             for (size_t i = 0; i < a.size(); i++) {
                 if (tolower((unsigned char)a[i]) != tolower((unsigned char)b[i]))
@@ -145,6 +146,7 @@ public:
             }
             return true;
             };
+
         for (uint i = 0; i < recompensas.longitud(); i++) {
             Recompensa<int>* r = recompensas.obtenerPos(i);
             if (r != nullptr && coincide(r->getNombre(), nombreBuscado))
@@ -159,7 +161,7 @@ public:
         return (nivelObjetivo - 1) * 100 + puntosParaNivel(nivelObjetivo - 1);
     }
 
-    // ordena las recompensas por puntos requeridos
+    // ordena las recompensas por puntos requeridos (Insertion sort)
     void ordenarRecompensasPorPuntos() {
         int n = (int)recompensas.longitud(); // O(1)
         if (n <= 1) return;                  // O(1)

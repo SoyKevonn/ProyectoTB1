@@ -121,6 +121,8 @@
     <ClInclude Include="GestionLecciones.h" />
     <ClInclude Include="GestionProgreso.h" />
     <ClInclude Include="GestionUsuario.h" />
+    <ClInclude Include="HashEntidad.h" />
+    <ClInclude Include="HashTabla.h" />
     <ClInclude Include="HistorialSesion.h" />
     <ClInclude Include="Leccion.h" />
     <ClInclude Include="Lista.h" />
