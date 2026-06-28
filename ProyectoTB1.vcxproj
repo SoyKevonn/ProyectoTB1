@@ -118,6 +118,7 @@
     <ClInclude Include="Ejercicio.h" />
     <ClInclude Include="EstadisticaUsuario.h" />
     <ClInclude Include="Fondo.h" />
+    <ClInclude Include="GeneradosDataSet.h" />
     <ClInclude Include="GestionLecciones.h" />
     <ClInclude Include="GestionProgreso.h" />
     <ClInclude Include="GestionUsuario.h" />

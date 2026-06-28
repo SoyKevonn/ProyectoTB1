@@ -4,6 +4,7 @@
 #include "Leccion.h"
 #include "Ejercicio.h"
 #include "Usuario.h"
+#include "GeneradosDataSet.h"
 #include "GestionUsuario.h"
 #include <cstdlib>
 #include <conio.h>
@@ -17,14 +18,67 @@ class GestionLecciones {
 private:
     Lista<Leccion*> misLecciones;
     Usuario<int>* usuarioActivo = nullptr;
+
+    void asegurarArchivoLeccion(string ruta, string tema, int idSource, vector<GeneradorDataSet::ParVocabulario>& vocabulario, int cantPreguntas) {
+        ifstream archivo(ruta);
+        if (!archivo.is_open()) {
+            // El archivo no existe o está dañado, se procede a crearlo automáticamente
+            GeneradorDataSet generador;
+            generador.generarLeccionVocabulario(ruta, tema, idSource, vocabulario, cantPreguntas);
+        }
+        else {
+            archivo.close();
+        }
+    }
 public:
     GestionLecciones() {
+        // Definición de bancos de vocabulario básico para contingencias
+        vector<GeneradorDataSet::ParVocabulario> vocabVerbos = {
+            {"Correr", "Run", 1}, {"Dormir", "Sleep", 1}, {"Hablar", "Speak", 1},
+            {"Saltar", "Jump", 1}, {"Beber", "Drink", 1}, {"Caminar", "Walk", 1},
+            {"Comer", "Eat", 1}, {"Lograr", "Achieve", 3}, {"Dudar", "Doubt", 3}
+        };
+
+        vector<GeneradorDataSet::ParVocabulario> vocabAnimales = {
+            {"Perro", "Dog", 1}, {"Gato", "Cat", 1}, {"Pajaro", "Bird", 1},
+            {"Caballo", "Horse", 1}, {"Pez", "Fish", 1}, {"Cerdo", "Pig", 1},
+            {"Oso", "Bear", 2}, {"Tiburon", "Shark", 2}, {"Lobo", "Wolf", 2}
+        };
+
+        vector<GeneradorDataSet::ParVocabulario> vocabColores = {
+            {"Rojo", "Red", 1}, {"Amarillo", "Yellow", 1}, {"Azul", "Blue", 1},
+            {"Verde", "Green", 1}, {"Blanco", "White", 1}, {"Negro", "Black", 1},
+            {"Rosado", "Pink", 1}, {"Gris", "Grey", 2}, {"Marron", "Brown", 2}
+        };
+
+        vector<GeneradorDataSet::ParVocabulario> vocabFamilia = {
+            {"Madre", "Mother", 1}, {"Hermano", "Brother", 1}, {"Padre", "Father", 1},
+            {"Hermana", "Sister", 1}, {"Tio", "Uncle", 1}, {"Tia", "Aunt", 1},
+            {"Abuelo", "Grandpa", 1}, {"Abuela", "Grandma", 2}, {"Primo", "Cousin", 2}
+        };
+
+        vector<GeneradorDataSet::ParVocabulario> vocabComidas = {
+            {"Agua", "Water", 1}, {"Manzana", "Apple", 1}, {"Leche", "Milk", 1},
+            {"Queso", "Cheese", 1}, {"Jugo", "Juice", 1}, {"Pan", "Bread", 1},
+            {"Arroz", "Rice", 1}, {"Pollo", "Chicken", 2}, {"Pescado", "Fish", 2}
+        };
+
+        // Garantizar la existencia física de los data sets en el entorno local
+        asegurarArchivoLeccion("verbos.txt", "Verbos", 7, vocabVerbos, 8);
+        asegurarArchivoLeccion("animales.txt", "Animales", 1, vocabAnimales, 8);
+        asegurarArchivoLeccion("colores.txt", "Colores", 2, vocabColores, 8);
+        asegurarArchivoLeccion("familia.txt", "Familia", 5, vocabFamilia, 8);
+        asegurarArchivoLeccion("comidas.txt", "Comidas", 4, vocabComidas, 8);
+
+        // Carga secuencial normal de las lecciones en memoria
         misLecciones.agregaFinal(new Leccion("Verbos", "verbos.txt", true));
         misLecciones.agregaFinal(new Leccion("Animales", "animales.txt", false));
         misLecciones.agregaFinal(new Leccion("Colores", "colores.txt", false));
         misLecciones.agregaFinal(new Leccion("Familia", "familia.txt", false));
         misLecciones.agregaFinal(new Leccion("Comidas", "comidas.txt", false));
     }
+
+
 
     // funciones que podrian ayudar a alfredo
     Leccion* getLeccion(uint indice) {
